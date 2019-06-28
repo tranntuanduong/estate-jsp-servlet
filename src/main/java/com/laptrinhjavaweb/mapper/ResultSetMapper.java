@@ -24,7 +24,7 @@ public class ResultSetMapper<T> {
 				 try {
 					 ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
 					 Field[] fields = zClass.getDeclaredFields();				
-					 while(resultSet.next()) {
+ 					 while(resultSet.next()) {
 						 T object = (T) zClass.newInstance();
 						 for(int i = 0; i < resultSetMetaData.getColumnCount(); i++) {
 							 String columnName = resultSetMetaData.getColumnName(i + 1);

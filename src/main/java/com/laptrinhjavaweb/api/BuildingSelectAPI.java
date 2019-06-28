@@ -40,8 +40,8 @@ public class BuildingSelectAPI extends HttpServlet{
 		properties.put("numberofbasement",10);
 		Sorter sorter = new Sorter("id", "desc");
 		PageRequest pageRequest = new PageRequest(1, 3, sorter);
-		List<BuildingDTO> buildingDTOList = buildingService.findAll(properties, pageRequest);
-		mapper.writeValue(response.getOutputStream(), buildingDTOList);
+//		List<BuildingDTO> buildingDTOList = buildingService.findAll(properties, pageRequest);
+//		mapper.writeValue(response.getOutputStream(), buildingDTOList);
 		System.out.println();
 	}
 }

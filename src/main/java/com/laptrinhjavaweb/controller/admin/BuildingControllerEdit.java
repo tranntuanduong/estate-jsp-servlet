@@ -9,20 +9,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(urlPatterns = "/admin-home")
-public class HomeController extends HttpServlet {
+@WebServlet(urlPatterns = "/admin-building/edit")
+public class BuildingControllerEdit extends HttpServlet {
 
 	private static final long serialVersionUID = 5243934502037847728L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		RequestDispatcher rd = request.getRequestDispatcher("/views/admin/home.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher("/views/admin/edit.jsp");
 		rd.forward(request, response);
 	}
-
-	protected void doPost (HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-
-	}
-
 }

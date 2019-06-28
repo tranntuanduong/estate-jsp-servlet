@@ -57,18 +57,10 @@ CREATE TABLE building (
 	timedecorator VARCHAR(255) NULL,
 	managername VARCHAR(255) NULL,
 	managerphone VARCHAR(255) NULL,
+    type VARCHAR(255) NULL,
+    level VARCHAR(255) NULL,
+    direction VARCHAR(255) NULL,
 	
-	createddate TIMESTAMP NULL,
-	modifieddate TIMESTAMP NULL,
-	createdby VARCHAR(255) NULL,
-	modifiedby VARCHAR(255) NULL
-);
-
-CREATE TABLE district (
-	id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	
-	name VARCHAR(255) NOT NULL,
-	code VARCHAR(255) NOT NULL,
 	
 	createddate TIMESTAMP NULL,
 	modifieddate TIMESTAMP NULL,
@@ -82,51 +74,19 @@ CREATE TABLE assignmentbuilding (
 	buildingid BIGINT NOT NULL,
 	userid BIGINT NOT NULL
 );
-
 ALTER TABLE assignmentbuilding ADD CONSTRAINT fk_assignment_user FOREIGN KEY (userid) REFERENCES user(id);
 ALTER TABLE assignmentbuilding ADD CONSTRAINT fk_assignment_building FOREIGN KEY  (buildingid) REFERENCES building(id);
 
-
-
-
-
-
-CREATE TABLE buildingtype (
-	id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,	
-	buildingtype VARCHAR(255) NULL
-);
-
-CREATE TABLE building_buildingtype (
-	id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,	
+CREATE TABLE rentarea (
+	id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	value VARCHAR(255),
 	buildingid BIGINT NOT NULL,
-	buildingtypeid BIGINT NOT NULL
+    createddate TIMESTAMP NULL,
+	modifieddate TIMESTAMP NULL,
+    createdby TIMESTAMP NULL,
+	modifiedby TIMESTAMP NULL
 );
-
-ALTER TABLE building_buildingtype ADD CONSTRAINT fk_buildingbuildingtype_building FOREIGN KEY (buildingid) REFERENCES building(id);
-ALTER TABLE building_buildingtype ADD CONSTRAINT fk_buildingbuildingtype_buildingtype FOREIGN KEY  (buildingid) REFERENCES buildingtype(id);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ALTER TABLE rentarea ADD CONSTRAINT fk_rentarea_building FOREIGN KEY  (buildingid) REFERENCES building(id);
 
 
 

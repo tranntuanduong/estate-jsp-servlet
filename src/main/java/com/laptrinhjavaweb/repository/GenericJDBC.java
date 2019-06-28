@@ -11,13 +11,9 @@ public interface GenericJDBC<T> {
 	 void update(String sql, Object...parameters);
 	 public Long insert(String sql, Object...parameters);
 	 Long insert(Object object);
-	 void update(Object object);
-	 //lam qua dai dong
-//	 void delete(Object object);
-//	 List<T> findById(Object object);
-//	 List<T> select(Object object,String orderByName,int pageid);
-	 
+	 void update(Object object); 
+
 	 void delete(long id);
 	 T findById(long id);
-	 List<T> findAll(Map<String, Object> properties,PageRequest pageRequest,Object...where);
+	 List<T> findAll(Map<String, Object> properties,Pageble pageble,Object...where);
 }

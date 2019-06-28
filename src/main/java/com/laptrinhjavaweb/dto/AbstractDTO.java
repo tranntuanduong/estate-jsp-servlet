@@ -1,8 +1,10 @@
 package com.laptrinhjavaweb.dto;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
-public class AbstractDTO {
+public class AbstractDTO<T> {
 	
 	private Long id;
 	private Timestamp createdDate; 
@@ -11,6 +13,8 @@ public class AbstractDTO {
 	private String modifiedBy;
 	private int maxPageItem = 3;
 	private int page = 1;
+	private String action;
+	private List<T> listResult = new ArrayList<T>();
 	public Long getId() {
 		return id;
 	}
@@ -52,6 +56,18 @@ public class AbstractDTO {
 	}
 	public void setPage(int page) {
 		this.page = page;
+	}
+	public String getAction() {
+		return action;
+	}
+	public void setAction(String action) {
+		this.action = action;
+	}
+	public List<T> getListResult() {
+		return listResult;
+	}
+	public void setListResult(List<T> listResult) {
+		this.listResult = listResult;
 	}	
 	
 }

@@ -1,6 +1,6 @@
 package com.laptrinhjavaweb.dto;
 
-public class UserDTO extends AbstractDTO {
+public class UserDTO extends AbstractDTO<UserDTO> {
 	private String userName;
 	private String password;
 	private String fullName;
@@ -29,6 +29,5 @@ public class UserDTO extends AbstractDTO {
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
-	
-	
+
 }

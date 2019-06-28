@@ -1,6 +1,5 @@
 package com.laptrinhjavaweb.repositoty.impl;
 
-import java.awt.print.Pageable;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -13,11 +12,9 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
 
-import com.google.protobuf.compiler.PluginProtos.CodeGeneratorResponse.File;
 import com.laptrinhjavaweb.annotation.Column;
 import com.laptrinhjavaweb.annotation.Table;
 import com.laptrinhjavaweb.mapper.ResultSetMapper;
-import com.laptrinhjavaweb.paging.PageRequest;
 import com.laptrinhjavaweb.paging.Pageble;
 import com.laptrinhjavaweb.paging.Sorter;
 import com.laptrinhjavaweb.repository.GenericJDBC;
@@ -368,234 +365,6 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 		sql = "UPDATE "+table+" set "+sets.toString() + where;	
 		return sql;
 	}
-//	//qua dai dong
-//	public void delete(Object object) {	
-//		Connection conn = null;
-//		PreparedStatement ptmt = null;	
-//		try {
-//			conn = getConnection();
-//			conn.setAutoCommit(false);
-//			String sql = createSQLDelete();
-//			ptmt = conn.prepareStatement(sql);
-//			if(conn!=null) {
-//				Class<?> zClass = object.getClass();
-//				Class<?> parentClass = zClass.getSuperclass();	
-//				while(parentClass != null) {
-//					Field[] fieldParents = parentClass.getDeclaredFields();
-//					for(int i = 0; i < fieldParents.length; i++) {
-//						Column column = fieldParents[i].getAnnotation(Column.class);
-//						String columnName = column.name();
-//						if(columnName.equals("id")) {
-//							fieldParents[i].setAccessible(true);
-//							ptmt.setObject(1, fieldParents[i].get(object));
-//							break;
-//						}		
-//					}
-//					parentClass = parentClass.getSuperclass();
-//				}
-//			}
-//			ptmt.executeUpdate();
-//			conn.commit();
-//		} catch (SQLException | IllegalAccessException  e) {
-//			if(conn!=null) {
-//				try {
-//					conn.rollback();
-//				} catch (SQLException e1) {				
-//					e1.printStackTrace();
-//				}
-//			}
-//			e.printStackTrace();
-//		} finally {
-//			try {
-//				if(conn!=null) {
-//					conn.close();
-//				}
-//				if(ptmt!=null) {
-//					ptmt.close();
-//				}
-//			} catch(SQLException e) {
-//				e.printStackTrace();
-//			}
-//		}			
-//	}
-//	private String createSQLDelete() {
-//		String table = "";
-//		if(zClass.isAnnotationPresent(Table.class)) {
-//			table = zClass.getAnnotation(Table.class).name();
-//		}
-//		String where = " where id = ?";
-//		//delete from building where id = ?
-//		String sql = "DELETE FROM "+table + where;
-//		return sql;
-//	}
-//	//findById
-//	public List<T> findById(Object object) {	
-//		Connection conn = null;
-//		PreparedStatement ptmt = null;
-//		ResultSet resultSet = null;
-//		ResultSetMapper<T> resultSetMapper = new ResultSetMapper<>();	
-//		String sql = createSQLFindById();
-//		try{
-//			conn = getConnection();
-//			ptmt = conn.prepareStatement(sql);
-//			if(conn!=null) {			
-//				Class<?> zClass = object.getClass();
-//				Class<?> parentClass = zClass.getSuperclass();	
-//				while(parentClass != null) {
-//					Field[] fieldParents = parentClass.getDeclaredFields();
-//					for(int i = 0; i < fieldParents.length; i++) {
-//						Column column = fieldParents[i].getAnnotation(Column.class);
-//						String columnName = column.name();
-//						if(columnName.equals("id")) {
-//							fieldParents[i].setAccessible(true);
-//							ptmt.setObject(1, fieldParents[i].get(object));
-//							break;
-//						}		
-//					}
-//					parentClass = parentClass.getSuperclass();
-//				}
-//				resultSet = ptmt.executeQuery();
-//				return resultSetMapper.mapRow(resultSet, this.zClass);	
-//			}	
-//		} catch (SQLException | IllegalAccessException e) { 
-//			e.printStackTrace();
-//		}	
-//		return null;
-//	}
-//	private String createSQLFindById() {
-//		String table = "";
-//		if(zClass.isAnnotationPresent(Table.class)) {
-//			table = zClass.getAnnotation(Table.class).name();
-//		}
-//		String where = " where id = ?";
-//		//delete from building where id = ?
-//		String sql = "SELECT * FROM "+table + where;
-//		return sql;
-//	}
-//	
-//	//select
-//	public List<T> select(Object object,String orderByName,int pageid) {	
-//		Connection conn = null;
-//		PreparedStatement ptmt = null;
-//		ResultSet resultSet = null;
-//		ResultSetMapper<T> resultSetMapper = new ResultSetMapper<>();	
-//		String sql = createSQLSelect(object,orderByName,pageid);
-//		int indexSetObject = 0;
-//		try{
-//			conn = getConnection();
-//			ptmt = conn.prepareStatement(sql);
-//			if(conn!=null) {
-//				//current class
-//				Class<?> zClass = object.getClass();
-//				Field[] fields = zClass.getDeclaredFields();			
-//				for(int i = 0; i < fields.length; i++) {
-//					if(fields[i].isAnnotationPresent(Column.class)) {
-//						fields[i].setAccessible(true);
-//						String column = fields[i].getAnnotation(Column.class).name();
-//						Object fieldValue = fields[i].get(object);
-//						if(fields[i].get(object) != null) {
-//							ptmt.setObject(indexSetObject + 1,"%"+ fields[i].get(object)+"%");
-//							indexSetObject++;
-//						}		
-//					}
-//				}
-//				//parent class
-//				Class<?> parentClass = zClass.getSuperclass();
-//				while(parentClass != null) {
-//					Field[] fieldParents = parentClass.getDeclaredFields();
-//					for(int i = 0; i < fieldParents.length; i++) {
-//						if(fieldParents[i].isAnnotationPresent(Column.class)) {
-//								fieldParents[i].setAccessible(true);
-//								if(fieldParents[i].get(object) != null) {
-//									ptmt.setObject(indexSetObject + 1,"%"+ fieldParents[i].get(object)+"%");
-//									indexSetObject++;
-//								}	
-//						}		
-//					}
-//					parentClass = parentClass.getSuperclass();
-//				}
-//				resultSet = ptmt.executeQuery();
-//				return resultSetMapper.mapRow(resultSet, this.zClass);	
-//			}	
-//		} catch (SQLException | IllegalAccessException e) { 
-//			e.printStackTrace();
-//		}	
-//		return null;
-//	}
-//	private String createSQLSelect(Object object, String orderByName,int pageid) {
-//		String sql ="";
-//		String table = "";
-//		String limit = "";
-//		String orderBy = "";
-//		StringBuilder likes = new StringBuilder();
-//		if(zClass.isAnnotationPresent(Table.class)) {
-//			table = zClass.getAnnotation(Table.class).name();
-//		}
-//		//curent class
-//		Class<?> zClass = object.getClass();
-//		Field[] fields = zClass.getDeclaredFields();
-//		try {
-//			for(int i = 0 ; i < fields.length; i++) {
-//				if(fields[i].isAnnotationPresent(Column.class)) {
-//					Column column = fields[i].getAnnotation(Column.class);
-//					String columnName = column.name();			
-//					fields[i].setAccessible(true);				
-//					if(fields[i].get(object) != null) {
-//						if(likes.length() > 1) {
-//							likes.append(" and ");
-//						}
-//						if(likes.length() < 1) {
-//							likes.append(" where ");
-//						}						
-//						likes.append(columnName+" like ? ");
-//					}
-//				}
-//			}
-//			//parent class
-//			Class<?> parentClass = zClass.getSuperclass();
-//			while(parentClass != null) {
-//				Field[] fieldParents = parentClass.getDeclaredFields();
-//				for(int i = 0 ; i < fieldParents.length; i++) {
-//					if(fieldParents[i].isAnnotationPresent(Column.class)) {
-//						Column column = fieldParents[i].getAnnotation(Column.class);
-//						String columnName = column.name();
-//						
-//						fieldParents[i].setAccessible(true);				
-//						if(fieldParents[i].get(object) != null) {
-//							if(likes.length() > 1) {
-//								likes.append(" and ");
-//							}
-//							if(likes.length() < 1) {
-//								likes.append(" where ");
-//							}
-//							likes.append(columnName+" like ? ");
-//						}
-//					}
-//				}
-//				parentClass = parentClass.getSuperclass();
-//			}
-//			if(orderBy != null) {
-//				orderBy = " order by "+orderByName;
-//			}
-//			limit = paging(pageid);
-//			
-//		}catch (IllegalArgumentException | IllegalAccessException e) {
-//			e.printStackTrace();
-//		}		
-//		sql = "SELECT * FROM "+table+likes.toString()+orderBy+limit;
-//		return sql;
-//	}
-//	private String paging(int pageid) {
-//		int count = 3;	
-//		if(pageid != 1)  {
-//			pageid = pageid - 1;
-//			pageid = pageid*count+1;
-//		}
-//		int start = pageid;
-//		int end = pageid + count;
-//		String limit = " limit "+(start - 1)+","+(end - 1);
-//		return limit;
-//	}
 
 	@Override
 	public void delete(long id) {
@@ -675,7 +444,7 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 		}
 		return null;
 	}	
-	public List<T> findAll(Map<String, Object> properties,PageRequest pageRequest, Object...where){
+	public List<T> findAll(Map<String, Object> properties,Pageble pageble, Object...where){
 		Connection conn = null;
 		PreparedStatement ptmt = null;
 		ResultSet resultSet = null;
@@ -683,16 +452,16 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 		
 		StringBuilder sql = new StringBuilder();
 		sql = createSQlFindAll(properties);
-		if (where != null && where.length > 1) {
+		if (where != null && where.length >= 1) {
 			sql.append(where[0]);
 		}
-		if (pageRequest != null) {
-			if(pageRequest.getSorter() != null) {
-				Sorter sorter = pageRequest.getSorter();
-				sql.append(" ORDER BY "+sorter.getSortName()+" "+sorter.getSortBy());
+ 		if (pageble != null) {
+			if(pageble.getSorter() != null) {
+				Sorter sorter = pageble.getSorter();
+				sql.append("` ORDER BY "+sorter.getSortName()+" "+sorter.getSortBy());
 			}
-			if(pageRequest.getOffset() != null && pageRequest.getLimit() != null) {
-				sql.append(" LIMIT "+pageRequest.getOffset()+","+pageRequest.getLimit()+"");
+			if(pageble.getOffset() != null && pageble.getLimit() != null) {
+				sql.append(" LIMIT "+pageble.getOffset()+","+pageble.getLimit()+"");
 			}
 		}
 		try {
@@ -727,8 +496,8 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 		if(zClass.isAnnotationPresent(Table.class)) {
 			table = zClass.getAnnotation(Table.class).name();
 		}
-		StringBuilder sql = new StringBuilder("SELECT * FROM "+table+" WHERE 1 = 1");
-		if(properties != null && properties.size() > 1) {
+		StringBuilder sql = new StringBuilder("SELECT * FROM "+table+" A WHERE 1 = 1");
+		if(properties != null && properties.size() >= 1) {
 			String[] params = new String[properties.size()];
 			Object[] values = new Object[properties.size()];
 			int i = 0;
@@ -742,11 +511,15 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 					sql.append(" AND LOWER("+params[j]+") LIKE LOWER('%"+values[j]+"%')");
 				} else if(values[j] instanceof Integer) {
 					sql.append(" AND "+params[j]+" = "+values[j]+" ");
+				} else if(values[j] instanceof Long) {
+					sql.append(" AND "+params[j]+" = "+values[j]+" ");
 				}
 			}
 		}
 		return sql;
 	}
+
+	
 }
 
 

@@ -19,9 +19,9 @@
 		<modermapper.version>2.3.0</modermapper.version>
 	</properties>
 
-	
+
 	<dependencies>
-	
+
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
@@ -38,7 +38,7 @@
 			<artifactId>javax.servlet-api</artifactId>
 			<version>${servlet.api.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>commons-beanutils</groupId>
 			<artifactId>commons-beanutils</artifactId>
@@ -56,7 +56,7 @@
 			<artifactId>sitemesh</artifactId>
 			<version>${sitemesh.version}</version>
 		</dependency>
-		
+
 		<!-- jSon -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
@@ -88,11 +88,24 @@
 			<version>1.9.13</version>
 		</dependency>
 		<!-- end jSon -->
-		
+
 		<dependency>
 			<groupId>org.modelmapper</groupId>
 			<artifactId>modelmapper</artifactId>
 			<version>${modermapper.version}</version>
+		</dependency>
+
+		<!-- weld dependency injection -->
+		<dependency>
+			<groupId>org.jboss.weld.servlet</groupId>
+			<artifactId>weld-servlet-shaded</artifactId>
+			<version>3.0.2.Final</version>
+		</dependency>
+		<!-- apache common lang maven -->
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>	
+			<version>2.6</version>
 		</dependency>
 
 
