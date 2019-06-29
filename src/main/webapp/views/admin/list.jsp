@@ -46,7 +46,7 @@
 											<div class="col-sm-6">
 												<label><b>Diện tích sàn</b></label>
 												<div class="fg-line">
-													<input type="text" class="form-control input-sm" name="buildingArea" value="${model.buildingArea}"/>
+													<input type="number" class="form-control input-sm" name="buildingArea" value="${model.buildingArea}"/>
 												</div>
 											</div>
 										</div>
@@ -56,7 +56,7 @@
 												<select class="form-control" name="district" >
 													<option value="" selected>Chọn quận</option>
 													<c:forEach var="item" items="${districts}">
-														<!-- selected --><option value="${item.key}">${item.value}</option>
+														<option value="${item.key}" ${(item.key==model.district)?'selected':''}>${item.value}</option>
 													</c:forEach>
 													
 												</select>
@@ -78,7 +78,7 @@
 											<div class="col-sm-4">
 												<label><b>Số tầng hầm</b></label>
 												<div class="fg-line">
-													<input type="text" class="form-control input-sm" name="numberOfBasement" value="${model.numberOfBasement}" />
+													<input type="number" class="form-control input-sm" name="numberOfBasement" value="${model.numberOfBasement}" />
 												</div>
 											</div>
 											<div class="col-sm-4">
@@ -98,25 +98,25 @@
 											<div class="col-sm-3">
 												<label><b>Giá thuê từ</b></label>
 												<div class="fg-line">
-													<input type="text" class="form-control input-sm" name="costRentFrom" value="${model.costRentFrom}"/>
+													<input type="number" class="form-control input-sm" name="costRentFrom" value="${model.costRentFrom}"/>
 												</div>
 											</div>
 											<div class="col-sm-3">
 												<label><b>Giá thuê đến</b></label>
 												<div class="fg-line">
-													<input type="text" class="form-control input-sm" name="costRentTo" value="${model.costRentTo}"/>
+													<input type="number" class="form-control input-sm" name="costRentTo" value="${model.costRentTo}"/>
 												</div>
 											</div>
 											<div class="col-sm-3">
 												<label><b>Diện tích từ</b></label>
 												<div class="fg-line">
-													<input type="text" class="form-control input-sm" name="areaRentForm" value="${model.areaRentForm}"/>
+													<input type="number" class="form-control input-sm" name="areaRentForm" value="${model.areaRentForm}"/>
 												</div>
 											</div>
 											<div class="col-sm-3">
 												<label><b>Diện tích đến</b></label>
 												<div class="fg-line">
-													<input type="text" class="form-control input-sm" name="areaRentTo" value="${model.areaRentTo }"/>
+													<input type="number" class="form-control input-sm" name="areaRentTo" value="${model.areaRentTo }"/>
 												</div>
 											</div>
 										</div>
@@ -149,7 +149,9 @@
 												<label><b>Loại tòa nhà</b></label>
 												<div class="checkbox">
 													<c:forEach var="item" items="${buildingtypes}">
-														<!-- checked --><label><input type="checkbox" value="${item.key}" name="buildingTypes" ><b>${item.value}</b></label>
+														<label>
+															<input type="checkbox" value="${item.key}" name="buildingTypes" ${fn:contains(fn:join(model.buildingTypes,','),item.key) ? 'checked':'' }><b>${item.value}</b>
+														</label>
 													</c:forEach>
 												</div>																					
 											</div>
@@ -197,8 +199,10 @@
 						      <tr>
 						        <th>Tên sản phẩm</th>
 						        <th>Địa chỉ</th>
-						        <th>Giá thuê</th>
+						        <th>Số tầng hầm</th>
+						        <th>Diện tích sàn</th>
 						        <th>Diện tích thuê</th>
+						        <th>Giá thuê</th>
 						        <th>Loại tòa nhà</th>
 						        <th>Tên quản lý</th>
 						        <th>SĐT quản lí</th>
@@ -211,12 +215,13 @@
 						     	 <tr>
 							        <td>${item.name}</td>
 							        <td>${item.address}</td>
-							        <td>${item.costRent}</td>
+							        <td>${item.numberOfBasement}</td>
+							        <td>${item.buildingArea}</td>
 							        <td>${item.rentArea}</td>
+							        <td>${item.costRent}</td>
 							        <td>${item.type}</td>
 							        <td>${item.managerName}</td>
-							        <td>${item.managerPhone}</td>
-							        
+							        <td>${item.managerPhone}</td>							        
 						      	</tr>
 						     	</c:forEach>
 						      

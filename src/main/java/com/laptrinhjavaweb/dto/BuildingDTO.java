@@ -7,7 +7,7 @@ public class BuildingDTO extends AbstractDTO<BuildingDTO>{
 	private String ward;
 	private String street;
 	private String structure;
-	private Integer numberOfBasement;
+	private String numberOfBasement;
 	private String buildingArea;
 	private String district;
 	private String costRent;
@@ -34,10 +34,10 @@ public class BuildingDTO extends AbstractDTO<BuildingDTO>{
 	private String areaRentTo;
 	private String[] buildingTypes = new String[]{};
 	
-	public Integer getNumberOfBasement() {
+	public String getNumberOfBasement() {
 		return numberOfBasement;
 	}
-	public void setNumberOfBasement(Integer numberOfBasement) {
+	public void setNumberOfBasement(String numberOfBasement) {
 		this.numberOfBasement = numberOfBasement;
 	}
 	public String[] getBuildingTypes() {

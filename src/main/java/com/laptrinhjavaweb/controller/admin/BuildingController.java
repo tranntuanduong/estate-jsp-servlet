@@ -43,11 +43,9 @@ public class BuildingController extends HttpServlet {
 			url = "/views/admin/list.jsp";
 			BuildingSearchBuilder builder = initBuildingBuilder(model);
 			Pageble pageble = new PageRequest(null, null, null);
-			model.setListResult(buildingService.findAll(builder, pageble));
-			
+			model.setListResult(buildingService.findAll(builder, pageble));		
 		} else if (model.getAction().equals("EDIT")) { 
-			url = "/views/admin/edit.jsp";
-			
+			url = "/views/admin/edit.jsp";			
 		}
 		request.setAttribute("districts", DataUtils.getDistricts());
 		request.setAttribute("buildingtypes", DataUtils.getBuildingType());
@@ -61,8 +59,9 @@ public class BuildingController extends HttpServlet {
 				.setName(model.getName()).setWard(model.getWard()).setDistrict(model.getDistrict())
 				.setCostRentFrom(model.getCostRentFrom()).setCostRentTo(model.getCostRentTo())
 				.setAreaRentForm(model.getAreaRentForm()).setAreaRentTo(model.getAreaRentTo())
-//				.setNumberOfBasement(model.getNumberOfBasement())
+				.setNumberOfBasement(model.getNumberOfBasement()).setRentArea(model.getRentArea())
 				.setStreet(model.getStreet()).setBuildingTypes(model.getBuildingTypes())
+				.setBuildingArea(model.getBuildingArea())
 				.build();
 		return builder;
 	}
