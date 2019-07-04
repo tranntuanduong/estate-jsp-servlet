@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@include file="/common/taglib.jsp"%>
 <c:url var = "buildingURL" value = "/admin-building"/>
+<c:url var="builddingAPI" value="/api-admin-building"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -173,14 +174,12 @@
 						<div class="table-btn-controls">
 							<div class="pull-right tableTools-container">
 								<div class="dt-buttons btn-overlap btn-group">
-									<a flag="info"
-										class="dt-button buttons-colvis btn btn-white btn-primary btn-bold"
+									<a  class="dt-button buttons-colvis btn btn-white btn-primary btn-bold"
 										data-toggle="tooltip"
-										title='Thêm tòa nhà'
-										
+										title='Thêm tòa nhà'		
 										href='<c:url value="/admin-building?action=EDIT"/>'> <span><i class="fa fa-plus-circle sbigger-110 purple"></i></span>
 									</a>
-									<button type="button"
+									<button type="button" id="bntDelete"
 											class="dt-button buttons-html5 btn btn-white btn-primary btn-bold"
 											data-toggle="tooltip" title='Xóa tòa nhà'>
 											<span><i class="fa fa-trash-o bigger-110 pink"></i></span>
@@ -197,6 +196,7 @@
 					 	<table class="table table-bordered">
 						    <thead>
 						      <tr>
+						      	<th><input type="checkbox" value="#"></th>
 						        <th>Tên sản phẩm</th>
 						        <th>Địa chỉ</th>
 						        <th>Số tầng hầm</th>
@@ -206,23 +206,32 @@
 						        <th>Loại tòa nhà</th>
 						        <th>Tên quản lý</th>
 						        <th>SĐT quản lí</th>
-						     					       
+						     	<th>Thao tác</th>			       
 						      </tr>
 						    </thead>
 						    
 						    <tbody>
 						     	<c:forEach var="item" items="${model.listResult}">
-						     	 <tr>
-							        <td>${item.name}</td>
-							        <td>${item.address}</td>
-							        <td>${item.numberOfBasement}</td>
-							        <td>${item.buildingArea}</td>
-							        <td>${item.rentArea}</td>
-							        <td>${item.costRent}</td>
-							        <td>${item.type}</td>
-							        <td>${item.managerName}</td>
-							        <td>${item.managerPhone}</td>							        
-						      	</tr>
+							     	 <tr>
+							     	 	<td><input type="checkbox" value="${item.id}" id="checkbox_${item.id}"></td>
+								        <td>${item.name}</td>
+								        <td>${item.address}</td>
+								        <td>${item.numberOfBasement}</td>
+								        <td>${item.buildingArea}</td>
+								        <td>${item.rentArea}</td>
+								        <td>${item.costRent}</td>
+								        <td>${item.type}</td>
+								        <td>${item.managerName}</td>
+								        <td>${item.managerPhone}</td>	
+								        <td>
+								        	<a class="btn btn-xs btn-primary btn-edit"
+												data-toggle="tooltip"
+												title='Cập nhật tòa nhà'
+												href='<c:url value="/admin-building?action=EDIT&id=${item.id}"/>'> 
+												<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+											</a>
+								        </td>						        
+							      	</tr>
 						     	</c:forEach>
 						      
 						    </tbody>
@@ -233,5 +242,45 @@
 		</div>
 	</div>
 	<!-- /.main-content -->
+<script type="text/javascript">
+	$('#bntDelete').click(function name() {
+		var dataArray = $(' tbody input[type=checkbox]:checked').map(function () {
+			return $(this).val();			
+		}).get();
+		var data = {};
+		data['ids'] = dataArray;	
+		deleteBuilding(data);	
+	})
+	
+	function deleteBuilding(data) {
+		$.ajax({
+			url: '${builddingAPI}',
+			data: JSON.stringify(data),
+			type: 'DELETE',	
+			contentType: 'application/json',
+			dataType: 'json',
+			success: function(data) {
+				window.location.href = "${buildingURL}?action=LIST&message=delete_success";
+			},		
+			error: function() {
+				window.location.href = "${buildingURL}?action=LIST&message=errorsystem";
+			}
+		});
+	}
+</script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

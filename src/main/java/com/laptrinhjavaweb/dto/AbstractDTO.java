@@ -15,6 +15,7 @@ public class AbstractDTO<T> {
 	private int page = 1;
 	private String action;
 	private List<T> listResult = new ArrayList<T>();
+	private Long[] ids;
 	public Long getId() {
 		return id;
 	}
@@ -68,6 +69,12 @@ public class AbstractDTO<T> {
 	}
 	public void setListResult(List<T> listResult) {
 		this.listResult = listResult;
+	}
+	public Long[] getIds() {
+		return ids;
+	}
+	public void setIds(Long[] ids) {
+		this.ids = ids;
 	}	
 	
 }

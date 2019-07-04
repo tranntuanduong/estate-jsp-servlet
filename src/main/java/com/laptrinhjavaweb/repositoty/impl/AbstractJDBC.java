@@ -170,7 +170,8 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 					int index = i + 1;
 					fields[i].setAccessible(true);
 					ptmt.setObject(index, fields[i].get(object));
-				}			
+				}	
+				
 				//check parent class
 				Class<?> parentClass = zClass.getSuperclass();
 				int indexParent = fields.length + 1;
@@ -367,7 +368,7 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 	}
 
 	@Override
-	public void delete(long id) {
+	public void delete(Long id) {
 		Connection conn = null;
 		PreparedStatement ptmt = null;	
 		try {
@@ -519,7 +520,42 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 		return sql;
 	}
 
-	
+	@Override
+	public void deleteByProperty(String where) {
+		Connection conn = null;
+		Statement ptmt = null;	
+		try {
+			conn = getConnection();	
+			conn.setAutoCommit(false);
+			String table = "";
+			if(zClass.isAnnotationPresent(Table.class)) {
+				table = zClass.getAnnotation(Table.class).name();	
+			}
+			String sql = "DELETE FROM "+table+" "+where;
+			ptmt = conn.createStatement();	
+			ptmt.execute(sql);
+			conn.commit();
+		} catch (SQLException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		} finally {
+			try {
+				if(conn != null) {	
+					conn.close();
+				}
+				if(ptmt != null) {
+					ptmt.close();
+				}
+			} catch(SQLException e){
+				
+			}
+		}	
+	}
+
 }
 
 

@@ -2,6 +2,8 @@ package com.laptrinhjavaweb.api;
 
 
 import java.io.IOException;
+
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,7 +20,10 @@ import com.laptrinhjavaweb.utils.HttpUtil;
 @WebServlet(urlPatterns = "/api-admin-building")
 public class BuildingAPI extends HttpServlet{
 		@SuppressWarnings("unused")
+		
+		@Inject
 		private IBuildingService buildingService;
+		
 		public BuildingAPI() {
 			buildingService = new BuildingService();
 		}
@@ -42,11 +47,11 @@ public class BuildingAPI extends HttpServlet{
 			request.setCharacterEncoding("UTF-8");
 			response.setContentType("application/json");
 			ObjectMapper mapper = new ObjectMapper();
-			BuildingDTO buildingDTO = HttpUtil.of(request.getReader()).toModel(BuildingDTO.class);
+			BuildingDTO buildingDTO = new BuildingDTO();
+			 buildingDTO = HttpUtil.of(request.getReader()).toModel(BuildingDTO.class);
 			//logic
 			buildingDTO = buildingService.save(buildingDTO);
 			mapper.writeValue(response.getOutputStream(), buildingDTO);
-			System.out.println();
 		}
 		
 		protected void doPut(HttpServletRequest request, HttpServletResponse response) 
@@ -54,18 +59,21 @@ public class BuildingAPI extends HttpServlet{
 			request.setCharacterEncoding("UTF-8");
 			response.setContentType("application/json");
 			ObjectMapper mapper = new ObjectMapper();
-			BuildingDTO buildingDTO = HttpUtil.of(request.getReader()).toModel(BuildingDTO.class);
+			BuildingDTO updateBuilding = HttpUtil.of(request.getReader()).toModel(BuildingDTO.class);
 			//logic
-			buildingService.update(buildingDTO);
-			mapper.writeValue(response.getOutputStream(), buildingDTO);
-			System.out.println();
+			buildingService.update(updateBuilding, updateBuilding.getId());
+			mapper.writeValue(response.getOutputStream(), "{}");
 		}
 		
 		protected void doDelete(HttpServletRequest request, HttpServletResponse response) 
 				throws ServletException, IOException {
+			request.setCharacterEncoding("UTF-8");
+			response.setContentType("application/json");
+			ObjectMapper mapper = new ObjectMapper();
+			BuildingDTO buildingDTO = HttpUtil.of(request.getReader()).toModel(BuildingDTO.class);
 			//logic
-			String id = request.getParameter("id");
-			buildingService.delete(Long.parseLong(id));	
+			buildingService.delete(buildingDTO.getIds());
+			mapper.writeValue(response.getOutputStream(), "{}");		
 		}
 
 	

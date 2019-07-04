@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@include file="/common/taglib.jsp"%>
+<c:url var="builddingAPI" value="/api-admin-building"/>
+<c:url var = "buildingURL" value = "/admin-building"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,8 +14,7 @@
 		<div class="main-content-inner">
 			<div class="breadcrumbs ace-save-state" id="breadcrumbs">
 				<ul class="breadcrumb">
-					<li><i class="ace-icon fa fa-home home-icon"></i> <a href="#">Trang
-							chủ</a></li>
+					<li><i class="ace-icon fa fa-home home-icon"></i> <a href="#">Trang chủ</a></li>
 					<li><a href="#">Sản phẩm</a></li>
 					<li>Thêm sản phẩm</li>
 				</ul>
@@ -21,14 +23,14 @@
 			<div class="page-content">
 				<div class="row">
 					<div class="col-xs-12">
-						<form class="form-horizontal" role="form">
+						<form class="form-horizontal" role="form" id="formEdit">
 							<div class="form-group">
 								<div class="col-sm-3">
 									<label><b>Tên Sản phẩm</b></label>
 								</div>
 								<div class="col-sm-9">
 									<div class="fg-line">
-										<input type="text" class="form-control input-sm" />
+										<input type="text" class="form-control input-sm" name="name" value="${model.name}"/>
 									</div>
 								</div>
 							</div>
@@ -38,11 +40,6 @@
 								</div>
 								<div class="col-sm-3">
 									<div class="fg-line">
-										<!-- <button class="btn btn-info">
-											Thêm hình ảnh
-											<i class="glyphicon glyphicon-picture"></i>
-											
-										</button> -->
 										<label class="block clearfix">
 											<input type="file" name="file" class="btn btn-info">
 										</label>
@@ -72,12 +69,11 @@
 								</div>
 								<div class="col-sm-3">
 									<div class="fg-line">
-										<select class="form-control" id="sel1">
-											<option value="" disabled selected>-Chọn quận-</option>
-											<option value="#">Quận 1</option>
-											<option value="#">Quận 2</option>
-											<option value="#">Quận 3</option>
-											<option value="#">Quận 4</option>
+										<select class="form-control" name="district" >
+											<option value="" selected>Chọn quận</option>
+											<c:forEach var="item" items="${districts}">
+												<option value="${item.key}" ${(item.key==model.district)?'selected':''}>${item.value}</option>
+											</c:forEach>		
 										</select>
 									</div>
 								</div>
@@ -88,7 +84,7 @@
 								</div>
 								<div class="col-sm-9">
 									<div class="fg-line">
-										<input type="text" class="form-control input-sm" />
+										<input type="text" class="form-control input-sm" name="ward" value="${model.ward}"/>
 									</div>
 								</div>
 							</div>
@@ -98,7 +94,7 @@
 								</div>
 								<div class="col-sm-9">
 									<div class="fg-line">
-										<input type="text" class="form-control input-sm" />
+										<input type="text" class="form-control input-sm" name="street" value="${model.street}"/>
 									</div>
 								</div>
 							</div>
@@ -108,7 +104,7 @@
 								</div>
 								<div class="col-sm-9">
 									<div class="fg-line">
-										<input type="text" class="form-control input-sm" />
+										<input type="text" class="form-control input-sm" name="structure" value="${model.structure}"/>
 									</div>
 								</div>
 							</div>
@@ -118,7 +114,7 @@
 								</div>
 								<div class="col-sm-9">
 									<div class="fg-line">
-										<input type="number" class="form-control input-sm" />
+										<input type="number" class="form-control input-sm" name="numberOfBasement" value="${model.numberOfBasement}"/>
 									</div>
 								</div>
 							</div>
@@ -128,7 +124,7 @@
 								</div>
 								<div class="col-sm-9">
 									<div class="fg-line">
-										<input type="number" class="form-control input-sm" />
+										<input type="number" class="form-control input-sm" name="buildingArea" value="${model.buildingArea}" id="buildingArea"/>
 									</div>
 								</div>
 							</div>
@@ -138,7 +134,7 @@
 								</div>
 								<div class="col-sm-9">
 									<div class="fg-line">
-										<input type="text" class="form-control input-sm" />
+										<input type="text" class="form-control input-sm" name="direction" value="${model.direction}"/>
 									</div>
 								</div>
 							</div>
@@ -148,7 +144,7 @@
 								</div>
 								<div class="col-sm-9">
 									<div class="fg-line">
-										<input type="text" class="form-control input-sm" />
+										<input type="text" class="form-control input-sm" name="level" value="${model.level}"/>
 									</div>
 								</div>
 							</div>
@@ -158,7 +154,7 @@
 								</div>
 								<div class="col-sm-9">
 									<div class="fg-line">
-										<input type="number" class="form-control input-sm" />
+										<input type="text" class="form-control input-sm" name="rentArea" value="${model.rentArea}"/>
 									</div>
 								</div>
 							</div>
@@ -179,7 +175,7 @@
 								</div>
 								<div class="col-sm-9">
 									<div class="fg-line">
-										<input type="number" class="form-control input-sm" />
+										<input type="number" class="form-control input-sm" name="costRent" value="${model.costRent}"/>
 									</div>
 								</div>
 							</div>
@@ -189,7 +185,7 @@
 								</div>
 								<div class="col-sm-9">
 									<div class="fg-line">
-										<input type="text" class="form-control input-sm" />
+										<input type="text" class="form-control input-sm" name="costDescription" value="${model.costDescription}"/>
 									</div>
 								</div>
 							</div>
@@ -199,7 +195,7 @@
 								</div>
 								<div class="col-sm-9">
 									<div class="fg-line">
-										<input type="text" class="form-control input-sm" />
+										<input type="text" class="form-control input-sm" name="carCost" value="${model.carCost}"/>
 									</div>
 								</div>
 							</div>
@@ -209,7 +205,7 @@
 								</div>
 								<div class="col-sm-9">
 									<div class="fg-line">
-										<input type="text" class="form-control input-sm" />
+										<input type="text" class="form-control input-sm" name="motorbikeCost" value="${model.motorbikeCost}"/>
 									</div>
 								</div>
 							</div>
@@ -219,7 +215,7 @@
 								</div>
 								<div class="col-sm-9">
 									<div class="fg-line">
-										<input type="text" class="form-control input-sm" />
+										<input type="text" class="form-control input-sm"  name="overtimeCost" value="${model.overtimeCost}"/>
 									</div>
 								</div>
 							</div>
@@ -229,7 +225,7 @@
 								</div>
 								<div class="col-sm-9">
 									<div class="fg-line">
-										<input type="text" class="form-control input-sm" />
+										<input type="text" class="form-control input-sm"  name="electricityCost" value="${model.electricityCost}"/>
 									</div>
 								</div>
 							</div>
@@ -239,7 +235,7 @@
 								</div>
 								<div class="col-sm-9">
 									<div class="fg-line">
-										<input type="text" class="form-control input-sm" />
+										<input type="text" class="form-control input-sm"  name="deposit" value="${model.deposit}"/>
 									</div>
 								</div>
 							</div>
@@ -249,7 +245,7 @@
 								</div>
 								<div class="col-sm-9">
 									<div class="fg-line">
-										<input type="text" class="form-control input-sm" />
+										<input type="text" class="form-control input-sm"  name="payment" value="${model.payment}"/>
 									</div>
 								</div>
 							</div>
@@ -259,7 +255,7 @@
 								</div>
 								<div class="col-sm-9">
 									<div class="fg-line">
-										<input type="text" class="form-control input-sm" />
+										<input type="text" class="form-control input-sm"  name="timeContract" value="${model.timeContract}"/>
 									</div>
 								</div>
 							</div>
@@ -269,7 +265,7 @@
 								</div>
 								<div class="col-sm-9">
 									<div class="fg-line">
-										<input type="text" class="form-control input-sm" />
+										<input type="text" class="form-control input-sm"  name="timeDecorator" value="${model.timeDecorator}"/>
 									</div>
 								</div>
 							</div>
@@ -279,7 +275,7 @@
 								</div>
 								<div class="col-sm-9">
 									<div class="fg-line">
-										<input type="text" class="form-control input-sm" />
+										<input type="text" class="form-control input-sm"  name="managerName" value="${model.managerName}"/>
 									</div>
 								</div>
 							</div>
@@ -289,43 +285,117 @@
 								</div>
 								<div class="col-sm-9">
 									<div class="fg-line">
-										<input type="text" class="form-control input-sm" />
+										<input type="text" class="form-control input-sm"  name="managerPhone" value="${model.managerPhone}"/>
 									</div>
 								</div>
 							</div>
-							<div class="form-group">
-								<div class="col-sm-3">
-									<label><b>Phí môi giới</b></label>
-								</div>
-								<div class="col-sm-9">
-									<div class="fg-line">
-										<input type="text" class="form-control input-sm" />
-									</div>
-								</div>
-							</div>
+							
 							<div class="form-group">
 								<div class="col-sm-3">
 									<label><b>Loại sản phẩm</b></label>
 								</div>
 								<div class="col-sm-9">
 									<div class="fg-line">
-										<label class="checkbox-inline"><input type="checkbox" value="">Option 1</label>
-										<label class="checkbox-inline"><input type="checkbox" value="">Option 2</label>
-										<label class="checkbox-inline"><input type="checkbox" value="">Option 3</label>
+											<div class="checkbox">
+												<c:forEach var="item" items="${buildingtypes}">
+													<label>
+														<input type="checkbox" value="${item.key}" name="buildingTypes" ${fn:contains(model.type,item.key) ? 'checked':'' }><b>${item.value}</b>
+													</label>
+												</c:forEach>
+											</div>		
 									</div>
 								</div>
 							</div>		
+							<input type="hidden" name="id" value="${model.id}" id="buildingId"/>
+							</form>
 							<div class="form-group">
-								<div class = "col-sm-1 col-sm-offset-3">
-									<button class = "btn btn-success" type = "submit">Thêm sản phẩm</button>
-								</div>
-							</div>				
-						</form>
+								<c:if test="${empty model.id}">
+									<div class = "col-sm-1 col-sm-offset-3">
+										<button class = "btn btn-success" id="btnAddOrUpdateBuilding">Thêm sản phẩm</button>
+									</div>
+								</c:if>
+								<c:if test="${not empty model.id}">
+									<div class = "col-sm-1 col-sm-offset-3">
+										<button class = "btn btn-success" id="btnAddOrUpdateBuilding">Cập nhật sản phẩm</button>
+									</div>
+								</c:if>
+							</div>		
+									
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 	<!-- /.main-content -->
+<script type="text/javascript">
+	$( "#btnAddOrUpdateBuilding" ).click(function() {
+	  	addOrUpdateBuilding();
+	});	
+	
+	function addOrUpdateBuilding() {
+		var buildingId = $('#buildingId').val();
+		var formData = $('#formEdit').serializeArray();
+		var data = {};
+		var buildingTypes = [];
+		$.each(formData, function (index, v ) {
+			if (v.name == 'buildingTypes') {
+				buildingTypes.push(v.value);
+			} else {
+				data[""+v.name+""] = v.value;
+			}			
+		});
+		data['buildingTypes'] = buildingTypes;
+		if (buildingId =='') {
+			addBuilding(data);
+		} else {
+			editBuilding(data, buildingId);
+		}
+	}
+	
+	function addBuilding(data,id) {
+		$.ajax({
+			url: '${builddingAPI}',
+			data: JSON.stringify(data),
+			type: 'POST',	
+			contentType: 'application/json',
+			dataType: 'json',
+	
+			success: function(data) {
+				window.location.href = "${buildingURL}?action=EDIT&id="+data.id+"&message=insert_success";
+			},		
+			error: function() {
+				window.location.href = "${buildingURL}?action=LIST&message=insert_success";
+			}
+		});
+	}
+	function editBuilding(data, id) {
+		$.ajax({
+			url: '${builddingAPI}',
+			data: JSON.stringify(data),
+			type: 'PUT',	
+			contentType: 'application/json',	
+			success: function(data) {
+				window.location.href = "${buildingURL}?action=EDIT&id="+id+"&message=update_success";
+			},		
+			error: function() {
+				window.location.href = "${buildingURL}?action=LIST&message=errorsystem";
+			}
+		});
+	}	
+</script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

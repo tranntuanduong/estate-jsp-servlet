@@ -16,10 +16,11 @@ import com.laptrinhjavaweb.entity.RentArea;
 import com.laptrinhjavaweb.paging.PageRequest;
 import com.laptrinhjavaweb.repository.IRentAreaRepository;
 
-public class BuildingConverter {
+public class BuildingConverter implements IBuildingConverter {
 	@Inject
 	private IRentAreaRepository  rentAreaRepository;
 	
+	@Override
 	public BuildingDTO convertToDTO(BuildingEntity buildingEntity) {
 		ModelMapper modelMapper = new ModelMapper();
 		BuildingDTO result = modelMapper.map(buildingEntity, BuildingDTO.class);
@@ -36,9 +37,17 @@ public class BuildingConverter {
 		return result;
 	}
 
+	@Override
 	public BuildingEntity convertToEntity(BuildingDTO dto) {
 		ModelMapper modelMapper = new ModelMapper();
 		BuildingEntity result = modelMapper.map(dto, BuildingEntity.class);
+		if(StringUtils.isNotBlank(dto.getNumberOfBasement())) {
+			result.setNumberOfBasement(Integer.parseInt(dto.getNumberOfBasement()));
+		}
+		if(StringUtils.isNotBlank(dto.getBuildingArea())) {
+			result.setBuildingArea(Integer.parseInt(dto.getBuildingArea()));
+		}
+		
 		return result;
 	}
 }

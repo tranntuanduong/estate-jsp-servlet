@@ -43,8 +43,11 @@ public class BuildingController extends HttpServlet {
 			url = "/views/admin/list.jsp";
 			BuildingSearchBuilder builder = initBuildingBuilder(model);
 			Pageble pageble = new PageRequest(null, null, null);
-			model.setListResult(buildingService.findAll(builder, pageble));		
+			model.setListResult(buildingService.findAll(builder, pageble));
 		} else if (model.getAction().equals("EDIT")) { 
+			if(model.getId() != null) {
+				model = buildingService.findById(model.getId());
+			}
 			url = "/views/admin/edit.jsp";			
 		}
 		request.setAttribute("districts", DataUtils.getDistricts());

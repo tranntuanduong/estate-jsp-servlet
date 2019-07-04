@@ -1,16 +1,21 @@
 package com.laptrinhjavaweb.service.impl;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.laptrinhjavaweb.builder.BuildingSearchBuilder;
-import com.laptrinhjavaweb.converter.BuildingConverter;
+import com.laptrinhjavaweb.converter.IBuildingConverter;
 import com.laptrinhjavaweb.dto.BuildingDTO;
 import com.laptrinhjavaweb.entity.BuildingEntity;
+import com.laptrinhjavaweb.entity.RentArea;
 import com.laptrinhjavaweb.paging.Pageble;
 import com.laptrinhjavaweb.repository.IBuildingRepository;
+import com.laptrinhjavaweb.repository.IRentAreaRepository;
 import com.laptrinhjavaweb.service.IBuildingService;
 
 public class BuildingService implements IBuildingService {
@@ -19,8 +24,10 @@ public class BuildingService implements IBuildingService {
 	private  IBuildingRepository buildingRepository;
 	
 	@Inject
-	private  BuildingConverter buildingConverter;
+	private  IBuildingConverter buildingConverter;
 
+	@Inject
+	private IRentAreaRepository rentAreaRespository;
 	/*public BuildingService() {
 		if(buildingRepository == null) {
 			buildingRepository = new BuildingRepository();
@@ -36,30 +43,23 @@ public class BuildingService implements IBuildingService {
 
 		BuildingEntity buildingEntity = buildingConverter.convertToEntity(buildingDTO);
 		buildingEntity.setCreatedBy("duong dep trai ahihi");
+		buildingEntity.setCreatedDate(new Timestamp(System.currentTimeMillis()));	
+		if(buildingDTO.getBuildingTypes().length > 0) {
+			buildingEntity.setType(StringUtils.join(buildingDTO.getBuildingTypes(), ","));
+		}
 		Long id = buildingRepository.insert(buildingEntity);
-		return null;
+		//save rentarea
+		if(StringUtils.isNotBlank(buildingDTO.getRentArea())) {
+			for(String item : buildingDTO.getRentArea().split(",")) {
+				RentArea rentArea = new RentArea();
+				rentArea.setValue(item);
+				rentArea.setBuildingId(id);
+				rentAreaRespository.insert(rentArea);
+			}	
+		}
+		return buildingConverter.convertToDTO(buildingRepository.findById(id));
 	}
-
-	@Override
-	public void update(BuildingDTO buildingDTO) {
-
-		BuildingEntity buildingEntity = buildingConverter.convertToEntity(buildingDTO);
-		buildingRepository.update(buildingEntity);
-	}
-
-	@Override
-	public BuildingDTO findById(long id) {
-		BuildingDTO buildingDTO = new BuildingDTO();
-		BuildingEntity buildingEntity = buildingRepository.findById(id);
-		buildingDTO = buildingConverter.convertToDTO(buildingEntity);
-		return buildingDTO;
-	}
-
-	@Override
-	public void delete(long id) {
-		buildingRepository.delete(id);
-	}
-
+	
 	@Override
 	public List<BuildingDTO> findAll(BuildingSearchBuilder builder, Pageble pageble) {
 		List<BuildingEntity> buildingEntities = buildingRepository.findAll(builder, pageble);
@@ -74,6 +74,42 @@ public class BuildingService implements IBuildingService {
 		return results;
 	}
 
-	
+	@Override
+	public void update(BuildingDTO updateBuilding, Long id) {
+		BuildingEntity oldBuilding = buildingRepository.findById(id);
+		BuildingEntity newBuilding = buildingConverter.convertToEntity(updateBuilding);
+		newBuilding.setCreatedBy(oldBuilding.getCreatedBy());
+		newBuilding.setCreatedDate(oldBuilding.getCreatedDate()); 
+		updateRentArea(updateBuilding.getRentArea() ,id);
+		newBuilding.setType(StringUtils.join(updateBuilding.getBuildingTypes(),","));
+		buildingRepository.update(newBuilding);
+	}
 
+	private void updateRentArea(String rentAreaStr, Long id) {
+		//delete
+		rentAreaRespository.deleteByBuildingId(id);		
+		//insert
+		for(String item : rentAreaStr.split(",")) {
+			RentArea rentArea = new RentArea();
+			rentArea.setValue(item);
+			rentArea.setBuildingId(id);
+			rentAreaRespository.insert(rentArea);
+		}
+	}
+
+	@Override
+	public BuildingDTO findById(long id) {
+ 		return buildingConverter.convertToDTO(buildingRepository.findById(id));
+	}
+
+	@Override
+	public void delete(Long[] ids) {
+		for(Long item : ids) {
+			rentAreaRespository.deleteByBuildingId(item);
+			buildingRepository.delete(item);
+		}
+		
+	}
+
+	
 }

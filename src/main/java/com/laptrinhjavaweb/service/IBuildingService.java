@@ -7,10 +7,10 @@ import com.laptrinhjavaweb.dto.BuildingDTO;
 import com.laptrinhjavaweb.paging.Pageble;
 
 public interface IBuildingService {	
-	void update(BuildingDTO buildingDTO);
-	void delete(long id);
+	void update(BuildingDTO newBuilding, Long id);
+	void delete(Long[] ids);
 	BuildingDTO  findById(long id);
-	
+	 
 	BuildingDTO save(BuildingDTO buildingDTO);
 	List<BuildingDTO> findAll(BuildingSearchBuilder builder, Pageble pageble); 
 	
