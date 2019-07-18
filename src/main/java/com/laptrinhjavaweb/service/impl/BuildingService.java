@@ -22,21 +22,20 @@ public class BuildingService implements IBuildingService {
 	
 	@Inject
 	private  IBuildingRepository buildingRepository;
-	
 	@Inject
 	private  IBuildingConverter buildingConverter;
 
 	@Inject
 	private IRentAreaRepository rentAreaRespository;
-	/*public BuildingService() {
+/*	public BuildingService() {
 		if(buildingRepository == null) {
 			buildingRepository = new BuildingRepository();
 		}
 		if(buildingConverter == null) {
 			buildingConverter = new BuildingConverter();
 		}
-	}*/
-	
+	}
+*/
 	
 	@Override
 	public BuildingDTO save(BuildingDTO buildingDTO) {
@@ -107,8 +106,12 @@ public class BuildingService implements IBuildingService {
 		for(Long item : ids) {
 			rentAreaRespository.deleteByBuildingId(item);
 			buildingRepository.delete(item);
-		}
-		
+		}		
+	}
+
+	@Override
+	public int getTotalItems(BuildingSearchBuilder builder) {
+		return buildingRepository.countByProperty(builder);
 	}
 
 	

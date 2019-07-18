@@ -23,7 +23,7 @@
 				<div class="row">
 					<div class="col-xs-12">
 					<!-- start form -->
-						<form action="${buildingURL}" method="get">
+						<form action="${buildingURL}" method="get" id="formSubmit">
 						<!--search box-->
 						<div class="widget-box table-filter">
 							<div class="widget-header">
@@ -167,6 +167,10 @@
 								</div>
 							</div>
 						</div>		
+						<input type="hidden" value="1" id="page" name="page"/>
+						<input type="hidden" value="3" id="maxPageItem" name="maxPageItem"/>
+						<input type="hidden" value="ASC" id="sortBy" name="sortBy"/>
+						<input type="hidden" value="name" id="sortName" name="sortName"/>
 						</form>
 						<!-- end form -->
 						
@@ -238,6 +242,12 @@
 						  </table>
 					</div>
 				</div>
+				<!-- paging -->
+				<div class="container">
+				    <nav aria-label="Page navigation">
+				        <ul class="pagination" id="pagination"></ul>
+				    </nav>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -260,13 +270,31 @@
 			contentType: 'application/json',
 			dataType: 'json',
 			success: function(data) {
-				window.location.href = "${buildingURL}?action=LIST&message=delete_success";
+				window.location.href = "${buildingURL}?action=LIST&page=1&maxPageItem=3&sortName=name&sortBy=ASC&message=delete_success";
 			},		
 			error: function() {
-				window.location.href = "${buildingURL}?action=LIST&message=errorsystem";
+				window.location.href = "${buildingURL}?action=LIST&page=1&maxPageItem=3&sortName=name&sortBy=ASC&message=errorsystem";
 			}
 		});
 	}
+	var totalPage = ${model.totalPage};
+	var currentPage = ${model.page};
+	 $(function () {
+	        window.pagObj = $('#pagination').twbsPagination({
+	            totalPages: totalPage,
+	            visiblePages: 5,      
+	            startPage: currentPage,
+	            onPageClick: function (event, page) {                 
+	                if(currentPage != page){
+	                	$('#page').val(page);
+	                	$('#maxPageItem').val(3);
+	                	$('#sortName').val('name');
+	                	$('#sortBy').val('ASC');
+	               	 	$('#formSubmit').submit();	   
+	               	}             		                
+	            }
+	        })
+	    });
 </script>
 </body>
 </html>

@@ -8,4 +8,5 @@ import com.laptrinhjavaweb.paging.Pageble;
 
 public interface IBuildingRepository extends GenericJDBC<BuildingEntity>{
 	List<BuildingEntity> findAll(BuildingSearchBuilder builder,Pageble pageble);
+	int countByProperty(BuildingSearchBuilder builder);
 }

@@ -45,7 +45,7 @@
             <b class="arrow"></b>
             <ul class="submenu">
                 <li class="">
-                    <a href='<c:url value="/admin-building?action=LIST"/>'>
+                    <a href='<c:url value="/admin-building?action=LIST&page=1&maxPageItem=3&sortName=name&sortBy=ASC"/>'>
                         <i class="menu-icon fa fa-caret-right"></i>
                         DS tòa nhà
                     </a>

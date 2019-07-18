@@ -18,36 +18,16 @@ public class BuildingRepository extends AbstractJDBC<BuildingEntity> implements 
 	@Override
 	public List<BuildingEntity> findAll(BuildingSearchBuilder builder, Pageble pageble) {
 		Map<String, Object> properties = buildMapSearch(builder);
-		StringBuilder whereClase = new StringBuilder();
-		if(StringUtils.isNotBlank(builder.getCostRentFrom())) {
-			whereClase.append(" AND costrent >= "+builder.getCostRentFrom());
-		}
-		if(StringUtils.isNotBlank(builder.getCostRentTo())) {
-			whereClase.append(" AND costrent <= "+builder.getCostRentTo());
-		}
-		if(StringUtils.isNotBlank(builder.getAreaRentForm()) || StringUtils.isNotBlank(builder.getAreaRentTo())) {
-			whereClase.append(" AND EXISTS (SELECT * FROM rentarea ra WHERE (ra.buildingid = A.id");
-			if(StringUtils.isNotBlank(builder.getAreaRentForm())) {
-				whereClase.append(" AND ra.value >='"+builder.getAreaRentForm()+"'");
-			}
-			if(StringUtils.isNotBlank(builder.getAreaRentTo())) {
-				whereClase.append(" AND ra.value <='"+builder.getAreaRentTo()+"'");
-			}
-			whereClase.append("))");
-		}
-		if(builder.getBuildingTypes().length > 0) {
-			 whereClase.append(" AND (A.type LIKE '%"+builder.getBuildingTypes()[0]+"%'");
-			 for(String type : builder.getBuildingTypes()) {	
-				 if(!type.equals(builder.getBuildingTypes()[0])) {
-					 whereClase.append(" OR A.type LIKE '%"+type+"%'");
-				 }
-			 }
-			 //java8
-//			 Arrays.stream(builder.getBuildingTypes()).filter(item -> !item.equals(builder.getBuildingTypes()[0]))
-//			 .forEach(item ->  whereClase.append(" OR A.type LIKE '%"+item+"%'"));
-			 whereClase.append(" )");
-		}
-		return findAll(properties, pageble, whereClase.toString());
+		StringBuilder whereClause = createWhereClause(builder);
+	
+		return findAll(properties, pageble, whereClause.toString());
+	}
+	
+	@Override
+	public int countByProperty(BuildingSearchBuilder builder) {
+		Map<String, Object> properties = buildMapSearch(builder);
+		StringBuilder whereClause = createWhereClause(builder);
+		return countByProperty(properties, whereClause.toString());
 	}
 
 	private Map<String, Object> buildMapSearch(BuildingSearchBuilder builder) {
@@ -58,7 +38,7 @@ public class BuildingRepository extends AbstractJDBC<BuildingEntity> implements 
 				if (!field.getName().equals("buildingTypes") && !field.getName().startsWith("costRent")
 						&& !field.getName().startsWith("areaRent")) {
 					field.setAccessible(true);
-					if (StringUtils.isNotBlank((String)field.get(builder))) {					
+					if (StringUtils.isNotBlank((String) field.get(builder))) {					
 						if(field.getName().equals("numberOfBasement") || field.getName().equals("buildingArea")) {
 							result.put(field.getName().toLowerCase(), Integer.parseInt((String)field.get(builder)));
 						} else {
@@ -71,6 +51,39 @@ public class BuildingRepository extends AbstractJDBC<BuildingEntity> implements 
 			e.printStackTrace();
 		}
 		return result;
+	}
+
+	private StringBuilder createWhereClause(BuildingSearchBuilder builder) {
+		StringBuilder whereClause = new StringBuilder();
+		if(StringUtils.isNotBlank(builder.getCostRentFrom())) {
+			whereClause.append(" AND costrent >= "+builder.getCostRentFrom());
+		}
+		if(StringUtils.isNotBlank(builder.getCostRentTo())) {
+			whereClause.append(" AND costrent <= "+builder.getCostRentTo());
+		}
+		if(StringUtils.isNotBlank(builder.getAreaRentForm()) || StringUtils.isNotBlank(builder.getAreaRentTo())) {
+			whereClause.append(" AND EXISTS (SELECT * FROM rentarea ra WHERE (ra.buildingid = A.id");
+			if(StringUtils.isNotBlank(builder.getAreaRentForm())) {
+				whereClause.append(" AND ra.value >='"+builder.getAreaRentForm()+"'");
+			}
+			if(StringUtils.isNotBlank(builder.getAreaRentTo())) {
+				whereClause.append(" AND ra.value <='"+builder.getAreaRentTo()+"'");
+			}
+			whereClause.append("))");
+		}
+		if(builder.getBuildingTypes().length > 0) {
+			whereClause.append(" AND (A.type LIKE '%"+builder.getBuildingTypes()[0]+"%'");
+			 for(String type : builder.getBuildingTypes()) {	
+				 if(!type.equals(builder.getBuildingTypes()[0])) {
+					 whereClause.append(" OR A.type LIKE '%"+type+"%'");
+				 }
+			 }
+			 //java8
+//			 Arrays.stream(builder.getBuildingTypes()).filter(item -> !item.equals(builder.getBuildingTypes()[0]))
+//			 .forEach(item ->  whereClase.append(" OR A.type LIKE '%"+item+"%'"));
+			 whereClause.append(" )");
+		}
+		return whereClause;
 	}
 	
 	

@@ -13,5 +13,6 @@ public interface IBuildingService {
 	 
 	BuildingDTO save(BuildingDTO buildingDTO);
 	List<BuildingDTO> findAll(BuildingSearchBuilder builder, Pageble pageble); 
+	int getTotalItems(BuildingSearchBuilder builder);
 	
 }

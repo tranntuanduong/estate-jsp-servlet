@@ -21,4 +21,5 @@ public interface GenericJDBC<T> {
 	 
 	 T findById(long id);
 	 List<T> findAll(Map<String, Object> properties,Pageble pageble,Object...where);
+	 int countByProperty(Map<String, Object> properties, Object...where);
 }

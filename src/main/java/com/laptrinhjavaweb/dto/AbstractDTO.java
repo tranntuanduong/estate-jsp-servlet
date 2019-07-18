@@ -11,11 +11,17 @@ public class AbstractDTO<T> {
 	private Timestamp modifiedDate;
 	private String createdBy; 
 	private String modifiedBy;
-	private int maxPageItem = 3;
-	private int page = 1;
+	private int maxPageItem ;
+	private int page;
 	private String action;
 	private List<T> listResult = new ArrayList<T>();
 	private Long[] ids;
+	private int totalPage = 0;
+	private int totalItems = 0;
+	private String sortName;
+	private String sortBy;
+	
+	
 	public Long getId() {
 		return id;
 	}
@@ -75,6 +81,32 @@ public class AbstractDTO<T> {
 	}
 	public void setIds(Long[] ids) {
 		this.ids = ids;
+	}
+
+	public int getTotalPage() {
+		return totalPage;
+	}
+	public void setTotalPage(int totalPage) {
+		this.totalPage = totalPage;
+	}
+	
+	public int getTotalItems() {
+		return totalItems;
+	}
+	public void setTotalItems(int totalItems) {
+		this.totalItems = totalItems;
+	}
+	public String getSortName() {
+		return sortName;
+	}
+	public void setSortName(String sortName) {
+		this.sortName = sortName;
+	}
+	public String getSortBy() {
+		return sortBy;
+	}
+	public void setSortBy(String sortBy) {
+		this.sortBy = sortBy;
 	}	
 	
 }

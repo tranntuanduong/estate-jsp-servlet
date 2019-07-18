@@ -1,7 +1,5 @@
 package com.laptrinhjavaweb.repositoty.impl;
 
-import java.util.List;
-
 import com.laptrinhjavaweb.entity.RentArea;
 import com.laptrinhjavaweb.repository.IRentAreaRepository;
 

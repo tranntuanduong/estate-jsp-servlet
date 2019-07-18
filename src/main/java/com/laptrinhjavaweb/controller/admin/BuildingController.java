@@ -14,6 +14,7 @@ import com.laptrinhjavaweb.builder.BuildingSearchBuilder;
 import com.laptrinhjavaweb.dto.BuildingDTO;
 import com.laptrinhjavaweb.paging.PageRequest;
 import com.laptrinhjavaweb.paging.Pageble;
+import com.laptrinhjavaweb.paging.Sorter;
 import com.laptrinhjavaweb.service.IBuildingService;
 import com.laptrinhjavaweb.utils.DataUtils;
 import com.laptrinhjavaweb.utils.FormUtil;
@@ -41,8 +42,10 @@ public class BuildingController extends HttpServlet {
 		String url ="";
 		if(model.getAction().equals("LIST")) {
 			url = "/views/admin/list.jsp";
-			BuildingSearchBuilder builder = initBuildingBuilder(model);
-			Pageble pageble = new PageRequest(null, null, null);
+			BuildingSearchBuilder builder = initBuildingBuilder(model);		
+			Pageble pageble = new PageRequest(model.getPage(), model.getMaxPageItem(), new Sorter(model.getSortName(), model.getSortBy()));
+			model.setTotalItems(buildingService.getTotalItems(builder));
+			model.setTotalPage((int)Math.ceil((double)model.getTotalItems() / model.getMaxPageItem()));
 			model.setListResult(buildingService.findAll(builder, pageble));
 		} else if (model.getAction().equals("EDIT")) { 
 			if(model.getId() != null) {

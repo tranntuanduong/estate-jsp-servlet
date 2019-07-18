@@ -19,7 +19,7 @@ import com.laptrinhjavaweb.utils.HttpUtil;
 
 @WebServlet(urlPatterns = "/api-admin-building")
 public class BuildingAPI extends HttpServlet{
-		@SuppressWarnings("unused")
+
 		
 		@Inject
 		private IBuildingService buildingService;

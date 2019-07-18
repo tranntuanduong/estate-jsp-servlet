@@ -12,6 +12,8 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.laptrinhjavaweb.annotation.Column;
 import com.laptrinhjavaweb.annotation.Table;
 import com.laptrinhjavaweb.mapper.ResultSetMapper;
@@ -456,11 +458,13 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 		if (where != null && where.length >= 1) {
 			sql.append(where[0]);
 		}
- 		if (pageble != null) {
+ 		if (pageble != null) {	
 			if(pageble.getSorter() != null) {
+				if(StringUtils.isNotBlank(pageble.getSorter().getSortName())) {
 				Sorter sorter = pageble.getSorter();
-				sql.append("` ORDER BY "+sorter.getSortName()+" "+sorter.getSortBy());
-			}
+				sql.append(" ORDER BY "+sorter.getSortName()+" "+sorter.getSortBy());
+				}
+			}	
 			if(pageble.getOffset() != null && pageble.getLimit() != null) {
 				sql.append(" LIMIT "+pageble.getOffset()+","+pageble.getLimit()+"");
 			}
@@ -554,6 +558,73 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 				
 			}
 		}	
+	}
+
+	@Override
+	public int countByProperty(Map<String, Object> properties, Object...where) {
+		Connection conn = null;
+		PreparedStatement ptmt = null;
+		ResultSet resultSet = null;	
+		StringBuilder sql = new StringBuilder();
+		sql = createSQLCountByProperty(properties);
+		if (where != null && where.length >= 1) {
+			sql.append(where[0]);
+		}
+		try {
+			conn = getConnection();
+			ptmt = conn.prepareStatement(sql.toString());
+			resultSet = ptmt.executeQuery();
+			if(conn != null) {
+				if(resultSet.next()) {
+					return resultSet.getInt("COUNT(*)");
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null) {	
+					conn.close();
+				}
+				if (ptmt != null) {
+					ptmt.close();
+				}
+				if (resultSet != null) {
+					resultSet.close();
+				}
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+		}
+		return 0;
+	}
+
+	private StringBuilder createSQLCountByProperty(Map<String, Object> properties) {
+		String table = "";
+		if(zClass.isAnnotationPresent(Table.class)) {
+			table = zClass.getAnnotation(Table.class).name();
+		}
+		StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM "+table+" A WHERE 1 = 1");
+		if(properties != null && properties.size() >= 1) {
+			String[] params = new String[properties.size()];
+			Object[] values = new Object[properties.size()];
+			int i = 0;
+			for(Map.Entry<?, ?> item : properties.entrySet()) {
+				params[i] = (String) item.getKey();
+				values[i] = item.getValue();
+				i++;
+			}
+			for(int j = 0; j < params.length; j++) {
+				if(values[j] instanceof String) {
+					sql.append(" AND LOWER("+params[j]+") LIKE LOWER('%"+values[j]+"%')");
+				} else if(values[j] instanceof Integer) {
+					sql.append(" AND "+params[j]+" = "+values[j]+" ");
+				} else if(values[j] instanceof Long) {
+					sql.append(" AND "+params[j]+" = "+values[j]+" ");
+				}
+			}
+		}
+		return sql;
 	}
 
 }
