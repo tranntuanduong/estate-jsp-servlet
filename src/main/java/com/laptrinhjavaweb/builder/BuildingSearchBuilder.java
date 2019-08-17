@@ -1,4 +1,4 @@
-package com.laptrinhjavaweb.builder;
+	package com.laptrinhjavaweb.builder;
 
 public class BuildingSearchBuilder {
 	 private String name;
@@ -9,7 +9,7 @@ public class BuildingSearchBuilder {
 	 private String rentArea;
 	 private String costRentFrom;
 	 private String costRentTo;
-	 private String areaRentForm;
+	 private String areaRentFrom;
 	 private String areaRentTo;
 	 private String[] buildingTypes = new String[] {};
 	 private String district;
@@ -33,8 +33,8 @@ public class BuildingSearchBuilder {
 	public String getCostRentTo() {
 		return costRentTo;
 	}
-	public String getAreaRentForm() {
-		return areaRentForm;
+	public String getAreaRentFrom() {
+		return areaRentFrom;
 	}
 	public String getAreaRentTo() {
 		return areaRentTo;
@@ -58,7 +58,7 @@ public class BuildingSearchBuilder {
 		 this.rentArea = builder.rentArea;
 		 this.costRentFrom = builder.costRentFrom;
 		 this. costRentTo = builder.costRentTo;
-		 this.areaRentForm = builder.areaRentForm;
+		 this.areaRentFrom = builder.areaRentForm;
 		 this.areaRentTo = builder.areaRentTo;
 		 this.buildingTypes = builder.buildingTypes;
 		 this.district = builder.district;

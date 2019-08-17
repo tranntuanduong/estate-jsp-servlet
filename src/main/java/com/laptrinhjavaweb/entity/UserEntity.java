@@ -12,7 +12,7 @@ public class UserEntity extends BaseEntity{
 	
 	@Column (name = "password")
 	private String password;
-
+	
 	
 
 	public String getUsername() {

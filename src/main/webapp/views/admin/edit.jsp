@@ -354,7 +354,8 @@
 	
 	function addBuilding(data,id) {
 		$.ajax({
-			url: '${builddingAPI}',
+			//url: '${builddingAPI}',
+			url : 'http://localhost:8087/api/building',
 			data: JSON.stringify(data),
 			type: 'POST',	
 			contentType: 'application/json',
@@ -370,7 +371,8 @@
 	}
 	function editBuilding(data, id) {
 		$.ajax({
-			url: '${builddingAPI}',
+			//url: '${builddingAPI}',
+			url : 'http://localhost:8087/api/building',
 			data: JSON.stringify(data),
 			type: 'PUT',	
 			contentType: 'application/json',	

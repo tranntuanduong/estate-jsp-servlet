@@ -1,8 +1,10 @@
 package com.laptrinhjavaweb.service;
 
+import java.util.List;
+
 import com.laptrinhjavaweb.dto.UserDTO;
-import com.laptrinhjavaweb.entity.UserEntity;
 
 public interface IUserService {
-	UserEntity save(UserDTO newUser);
+	List<UserDTO> findAll(String url);
+
 }

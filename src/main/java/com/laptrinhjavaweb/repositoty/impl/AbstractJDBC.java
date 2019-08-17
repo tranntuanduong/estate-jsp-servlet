@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -40,7 +41,7 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 			return DriverManager.getConnection(url, user, password);
 		} catch(ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
-		}
+		} 
 		return null;
 	}
 

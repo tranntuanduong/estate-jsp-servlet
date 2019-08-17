@@ -19,7 +19,6 @@ public class BuildingRepository extends AbstractJDBC<BuildingEntity> implements 
 	public List<BuildingEntity> findAll(BuildingSearchBuilder builder, Pageble pageble) {
 		Map<String, Object> properties = buildMapSearch(builder);
 		StringBuilder whereClause = createWhereClause(builder);
-	
 		return findAll(properties, pageble, whereClause.toString());
 	}
 	
@@ -61,10 +60,10 @@ public class BuildingRepository extends AbstractJDBC<BuildingEntity> implements 
 		if(StringUtils.isNotBlank(builder.getCostRentTo())) {
 			whereClause.append(" AND costrent <= "+builder.getCostRentTo());
 		}
-		if(StringUtils.isNotBlank(builder.getAreaRentForm()) || StringUtils.isNotBlank(builder.getAreaRentTo())) {
+		if(StringUtils.isNotBlank(builder.getAreaRentFrom()) || StringUtils.isNotBlank(builder.getAreaRentTo())) {
 			whereClause.append(" AND EXISTS (SELECT * FROM rentarea ra WHERE (ra.buildingid = A.id");
-			if(StringUtils.isNotBlank(builder.getAreaRentForm())) {
-				whereClause.append(" AND ra.value >='"+builder.getAreaRentForm()+"'");
+			if(StringUtils.isNotBlank(builder.getAreaRentFrom())) {
+				whereClause.append(" AND ra.value >='"+builder.getAreaRentFrom()+"'");
 			}
 			if(StringUtils.isNotBlank(builder.getAreaRentTo())) {
 				whereClause.append(" AND ra.value <='"+builder.getAreaRentTo()+"'");

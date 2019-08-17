@@ -188,6 +188,7 @@
 											data-toggle="tooltip" title='Xóa tòa nhà'>
 											<span><i class="fa fa-trash-o bigger-110 pink"></i></span>
 									</button>
+									
 								</div>
 							</div>
 						</div>
@@ -226,15 +227,35 @@
 								        <td>${item.costRent}</td>
 								        <td>${item.type}</td>
 								        <td>${item.managerName}</td>
-								        <td>${item.managerPhone}</td>	
-								        <td>
-								        	<a class="btn btn-xs btn-primary btn-edit"
-												data-toggle="tooltip"
-												title='Cập nhật tòa nhà'
-												href='<c:url value="/admin-building?action=EDIT&id=${item.id}"/>'> 
-												<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-											</a>
-								        </td>						        
+								        <td>${item.managerPhone}</td>									      
+								      	<td>
+																	        					
+										<table>
+											 <tr>
+											     <td>
+												     <a class="btn btn-xs btn-primary btn-edit"
+														data-toggle="tooltip"
+														title='Cập nhật tòa nhà'
+														href='<c:url value="/admin-building?action=EDIT&id=${item.id}"/>'> 
+														<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+													</a>
+												</td>
+											    <td>
+											      	<a class="btn btn-xs btn-primary btn-edit" data-toggle="modal" data-target="#exampleModal"
+														data-toggle="tooltip"
+														title='Giao tòa nhà'
+														href='<c:url value="/employee-list?action=EDIT&id=${item.id}"/>'>
+														<i class="menu-icon fa fa-list" aria-hidden="true"></i>
+													</a>
+											      </td>
+											  </tr>
+											  <tr>
+											      <td>C</td>
+											      <td>D</td>
+											  </tr>
+										</table>
+								        	
+								        					        
 							      	</tr>
 						     	</c:forEach>
 						      
@@ -251,6 +272,14 @@
 			</div>
 		</div>
 	</div>
+	<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      
+    </div>
+  </div>
+</div>
 	<!-- /.main-content -->
 <script type="text/javascript">
 	$('#bntDelete').click(function name() {
@@ -264,7 +293,8 @@
 	
 	function deleteBuilding(data) {
 		$.ajax({
-			url: '${builddingAPI}',
+			//url: '${builddingAPI}',
+			url : 'http://localhost:8087/api/building',
 			data: JSON.stringify(data),
 			type: 'DELETE',	
 			contentType: 'application/json',
@@ -295,6 +325,8 @@
 	            }
 	        })
 	    });
+	 
+	 
 </script>
 </body>
 </html>
