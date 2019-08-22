@@ -47,14 +47,21 @@
                 <li class="">
                     <a href='<c:url value="/admin-building?action=LIST&page=1&maxPageItem=3&sortName=name&sortBy=ASC"/>'>
                         <i class="menu-icon fa fa-caret-right"></i>
-                        DS tòa nhà
+                        Quản lý tòa nhà
                     </a>
                     <b class="arrow"></b>
                 </li>
                  <li class="">
                     <a href='<c:url value="/admin-user?action=LIST&page=1&maxPageItem=3&sortName=name&sortBy=ASC"/>'>
                         <i class="menu-icon fa fa-caret-right"></i>
-                        DS nhân viên
+                        Quản lí nhân viên
+                    </a>
+                    <b class="arrow"></b>
+                </li>
+                 <li class="">
+                    <a href='<c:url value="/admin-customer?action=LIST&page=1&maxPageItem=3&sortName=name&sortBy=ASC"/>'>
+                        <i class="menu-icon fa fa-caret-right"></i>
+                       	Quản lí khách hàng
                     </a>
                     <b class="arrow"></b>
                 </li>

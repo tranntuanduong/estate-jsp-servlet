@@ -1,18 +1,50 @@
 package com.laptrinhjavaweb.dto;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import com.laptrinhjavaweb.entity.RoleEntity;
-
 public class UserDTO extends AbstractDTO<UserDTO> {
+	private String buildingId;
+	private String customerId;
 	private String username;
 	private String fullName;
 	private String password;
-	private RoleEntity role;
-	private List<BuildingDTO> buildings = new ArrayList<BuildingDTO>();
+	private String role;
+	private List<BuildingDTO> buildings;
+	private List<CustomerDTO> customers;
+	private String buildingChecked;
+	private String customerChecked;
 	
+	public String getCustomerId() {
+		return customerId;
+	}
+	public void setCustomerId(String customerId) {
+		this.customerId = customerId;
+	}
+	public String getCustomerChecked() {
+		return customerChecked;
+	}
+	public void setCustomerChecked(String customerChecked) {
+		this.customerChecked = customerChecked;
+	}
+	public List<CustomerDTO> getCustomers() {
+		return customers;
+	}
+	public void setCustomers(List<CustomerDTO> customers) {
+		this.customers = customers;
+	}
+	public String getBuildingId() {
+		return buildingId;
+	}
+	public void setBuildingId(String buildingId) {
+		this.buildingId = buildingId;
+	}
 	
+	public String getBuildingChecked() {
+		return buildingChecked;
+	}
+	public void setBuildingChecked(String buildingChecked) {
+		this.buildingChecked = buildingChecked;
+	}
 	public List<BuildingDTO> getBuildings() {
 		return buildings;
 	}
@@ -31,10 +63,11 @@ public class UserDTO extends AbstractDTO<UserDTO> {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public RoleEntity getRole() {
+	
+	public String getRole() {
 		return role;
 	}
-	public void setRole(RoleEntity role) {
+	public void setRole(String role) {
 		this.role = role;
 	}
 	public String getFullName() {

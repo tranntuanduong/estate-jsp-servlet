@@ -56,27 +56,18 @@ public class BuildingController extends HttpServlet {
 			BuildingSearchBuilder builder = initBuildingBuilder(model);
 			String findAllStr = "http://localhost:8087/api/building";
 			StringBuilder findAllAPI = initBuildingParams(findAllStr,builder, model);
+			
 			String getTotalItemStr = "http://localhost:8087/api/building/total";
 			StringBuilder getTotalItemAPI = initBuildingParams(getTotalItemStr,builder, model); 
-			/*Pageble pageble = new PageRequest(model.getPage(), model.getMaxPageItem(), new Sorter(model.getSortName(), model.getSortBy()));
-			model.setTotalItems(buildingService.getTotalItems(builder));
+
+			model.setTotalItems(buildingService.getTotalItems(getTotalItemAPI.toString().replaceAll("\\s+", "%20")));
 			model.setTotalPage((int)Math.ceil((double)model.getTotalItems() / model.getMaxPageItem()));
-			model.setListResult(buildingService.findAll(builder, pageble));*/
-	
-			model.setTotalItems(buildingService.getTotalItems(getTotalItemAPI.toString()));
-			model.setTotalPage((int)Math.ceil((double)model.getTotalItems() / model.getMaxPageItem()));
-			model.setListResult(buildingService.findAll(findAllAPI.toString()));
-			/*
-			//load user
-			String getUserList = "http://localhost:8087/api/user";		
-			users.setListResult(userService.findAll(getUserList));
-			*/
+			model.setListResult(buildingService.findAll(findAllAPI.toString().replaceAll("\\s+", "%20")));	
 			
 		} else if (model.getAction().equals("EDIT")) { 
 			if(model.getId() != null) {
 				String findById = "http://localhost:8087/api/building/findAll?id="+model.getId();
-				model = buildingService.findById(findById);
-				
+				model = buildingService.findById(findById);				
 			}
 			url = "/views/admin/edit.jsp";			
 		} 

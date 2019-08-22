@@ -16,8 +16,8 @@ public class AbstractDTO<T> {
 	private String action;
 	private List<T> listResult = new ArrayList<T>();
 	private Long[] ids;
-	private int totalPage = 0;
-	private int totalItems = 0;
+	private int totalPage;
+	private int totalItems;
 	private String sortName;
 	private String sortBy;
 	
