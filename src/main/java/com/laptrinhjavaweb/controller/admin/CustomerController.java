@@ -36,7 +36,7 @@ public class CustomerController extends HttpServlet {
 		CustomerDTO model = FormUtil.toModel(CustomerDTO.class, request);
 		String url ="";
 		if(model.getAction().equals("LIST")) {
-
+			url = "/views/admin/customer/customer.jsp";
 			CustomerSearchBuilder builder = initCustomerSearchBuilder(model);
 			String findAllStr =  "http://localhost:8087/api/customer";
 			StringBuilder findAllAPI = initCustomerParams(findAllStr, builder, model);
@@ -51,9 +51,19 @@ public class CustomerController extends HttpServlet {
 			model.setStaffList(staffList);
 			
 			model.setListResult(customerService.findAll(findAllAPI.toString().replaceAll("\\s+", "%20")));
-			url = "/views/admin/customer/customer.jsp";
+		
 		} else if (model.getAction().equals("EDIT")) {
 			url = "/views/admin/customer/edit.jsp";
+			String customerIdStr = request.getParameter("customerId");
+			String findByIdAPI = "http://localhost:8087/api/customer/findById?id="+customerIdStr;
+			
+			CustomerDTO customer = customerService.findById(findByIdAPI);
+			request.setAttribute("customer", customer);
+			String loadStaffList = "http://localhost:8087/api/user/assignment?role=STAFF&customerId="+customerIdStr;
+			List<UserDTO> staffList = userService.findAll(loadStaffList);
+			model.setStaffList(staffList);
+
+		
 		}
 		//tam thoi de the nay da !!!!!
 		model.setTotalItems(5);
@@ -87,6 +97,7 @@ public class CustomerController extends HttpServlet {
 		CustomerSearchBuilder builder = new CustomerSearchBuilder.Builder()
 					.setName(model.getName()).setEmail(model.getEmail())
 					.setPhoneNumber(model.getPhoneNumber()).setUserId(model.getUserId())
+					
 					.build();
 		return builder;
 	}

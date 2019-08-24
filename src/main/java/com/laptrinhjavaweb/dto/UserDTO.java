@@ -13,7 +13,15 @@ public class UserDTO extends AbstractDTO<UserDTO> {
 	private List<CustomerDTO> customers;
 	private String buildingChecked;
 	private String customerChecked;
+	private Long userId;
 	
+
+	public Long getUserId() {
+		return userId;
+	}
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
 	public String getCustomerId() {
 		return customerId;
 	}

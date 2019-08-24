@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.laptrinhjavaweb.dto.BuildingDTO;
 import com.laptrinhjavaweb.dto.CustomerDTO;
 import com.laptrinhjavaweb.service.ICustomerService;
 import com.laptrinhjavaweb.utils.HttpClientUtils;
@@ -36,6 +37,19 @@ public class CustomerService implements ICustomerService {
 			e.printStackTrace();
 		}
 		return 0;
+	}
+
+	@Override
+	public CustomerDTO findById(String url) {
+		String result = HttpClientUtils.httpGet(url);
+		try {
+			CustomerDTO customerDTO = new ObjectMapper().readValue(result, CustomerDTO.class);
+			return customerDTO;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }
