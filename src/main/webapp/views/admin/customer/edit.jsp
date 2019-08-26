@@ -31,6 +31,9 @@
 				<div class="row">
 					<div class="col-xs-12">
 						<form class="form-horizontal" role="form" id="formEdit">
+						<!-- input hidden -->
+						<input type="hidden" name="id" value="${customer.id}" id="customerId"/>
+						<!-- input hidden end-->
 							<div class="form-group">
 								<div class="col-sm-3">
 									<label><b>Tên đầy đủ</b></label>
@@ -75,6 +78,16 @@
 							</div>
 							<div class="form-group">
 								<div class="col-sm-3">
+									<label><b>Tình trạng</b></label>
+								</div>
+								<div class="col-sm-7">
+									<div class="fg-line">
+										<input type="text" class="form-control input-sm"  name="status" value="${customer.status}"/>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-3">
 									<label><b>Nhu cầu</b></label>
 								</div>
 								<div class="col-sm-7">
@@ -97,25 +110,44 @@
 								<div class="col-sm-6">
 									<label><b>Nhân viên phụ trách</b></label>
 								</div>
-								<div class="col-sm-4">
-									
+								<div class="col-sm-6">
+									<!--  
 									<select class="form-control" name="userId">
 											<option value=""   selected>--Chọn nhân viên--</option>
 											<c:forEach var="item" items="${model.staffList}">
 												<option value="${item.id}" ${(item.id==customer.userId)?'selected':''}>${item.fullName}</option>
 											</c:forEach>
-									</select>
+									</select> -->
+									<c:forEach var="item" items="${model.staffList}" >		        			
+										    <tbody>			    
+										      <tr> 
+										      	<td>	
+													<input type="checkbox" value="${item.id}"  ${item.customerChecked} name="staffId">																																													
+												</td>
+										      	<td>${item.fullName}</td>		 
+										      </tr>
+										    </tbody>		  
+										    &nbsp; &nbsp; &nbsp; 
+					        		</c:forEach>
 								</div>
 							</div>
-							<input type="hidden" name="id" value="${customer.id}" id="customerId"/>
+							
 							
 						</form>
-						<div class="form-group">
-							<div class = "col-sm-1 col-sm-offset-3">
-								<button class = "btn btn-success" id="bntUpdateCustomer">Cập nhật khách hàng</button>
-							</div>
-						</div>		
-						
+						<c:if test="${customerId != null}">
+							<div class="form-group">
+								<div class = "col-sm-1 col-sm-offset-3">
+									<button class = "btn btn-success" id="bntAddOrUpdateCustomer">Cập nhật khách hàng</button>
+								</div>
+							</div>		
+						</c:if>
+						<c:if test="${customerId == null}">
+							<div class="form-group">
+								<div class = "col-sm-1 col-sm-offset-3">
+									<button class = "btn btn-success" id="bntAddOrUpdateCustomer">Thêm khách hàng</button>
+								</div>
+							</div>		
+						</c:if>
 					</div>
 				</div>
 			</div>
@@ -233,7 +265,7 @@
 	</div>
 	<input type="hidden" name="id" value="customercare" id="role_customercare"/>
 <script type="text/javascript">
-$('#bntUpdateCustomer').click(function name() {
+$('#bntAddOrUpdateCustomer').click(function name() {
 	
 	var customerId = $('#customerId').val();
 	var formData = $('#formEdit').serializeArray();
@@ -242,7 +274,16 @@ $('#bntUpdateCustomer').click(function name() {
 		data[""+v.name+""] = v.value;		
 	});
 	data['customerId'] = customerId;
-	updateCustomer(data, customerId);	
+	
+	var dataArray = $('input[name="staffId"]:checked').map(function () {
+		return $(this).val();			
+	}).get();
+	data['ids'] = dataArray;
+	if(customerId == '') {
+		addCustomer(data);
+	} else {
+		updateCustomer(data, customerId);	
+	}
 })
 
 function updateCustomer(data, id) {
@@ -252,7 +293,21 @@ function updateCustomer(data, id) {
 		type: 'PUT',	
 		contentType: 'application/json',
 		success: function(data) {
-			window.location.href = "${customerURL}?action=EDIT&customerId="+id+"&role=staff&message=success";
+			window.location.href = "${customerURL}?action=EDIT&customerId="+id+"&role=staff&message=addCustomerSuccess";
+		},		
+		error: function() {
+			window.location.href = "${customerURL}?action=LIST&page=1&maxPageItem=3&sortName=name&sortBy=ASC&message=errorsystem";
+		}
+	});
+}
+function addCustomer(data) {
+	$.ajax({
+		url : 'http://localhost:8087/api/customer',
+		data: JSON.stringify(data),
+		type: 'POST',	
+		contentType: 'application/json',
+		success: function(data) {
+			window.location.href = "${customerURL}?action=EDIT&customerId="+data.id+"&role=staff&message=success";
 		},		
 		error: function() {
 			window.location.href = "${customerURL}?action=LIST&page=1&maxPageItem=3&sortName=name&sortBy=ASC&message=errorsystem";
@@ -270,7 +325,6 @@ $('#btnCustomerCare').click(function name() {
 		data[""+v.name+""] = v.value;		
 	});
 	data['customerId'] = customerId;
-	
 	insertCustomerCare(data, customerId);	
 })
 

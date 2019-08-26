@@ -7,7 +7,7 @@ public class CustomerDTO extends AbstractDTO<CustomerDTO>  {
 	private String phoneNumber;
 	private String email;
 	private String need;
-	private String dataEntry;
+
 	private String status;
 	//nhan vien quan li customer
 	private String staffInCharge;
@@ -18,9 +18,16 @@ public class CustomerDTO extends AbstractDTO<CustomerDTO>  {
 	private String customerCare;
 	private String guide;
 	private String role;
+	private String[] userIds;
 	
 	private List<UserDTO> staffList;
 	
+	public String[] getUserIds() {
+		return userIds;
+	}
+	public void setUserIds(String[] userIds) {
+		this.userIds = userIds;
+	}
 	public List<UserDTO> getStaffList() {
 		return staffList;
 	}
@@ -99,12 +106,7 @@ public class CustomerDTO extends AbstractDTO<CustomerDTO>  {
 	public void setNeed(String need) {
 		this.need = need;
 	}
-	public String getDataEntry() {
-		return dataEntry;
-	}
-	public void setDataEntry(String dataEntry) {
-		this.dataEntry = dataEntry;
-	}
+	
 	public String getStatus() {
 		return status;
 	}

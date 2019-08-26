@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@include file="/common/taglib.jsp"%>
 <c:url var = "customerURL" value = "/admin-customer"/>
-<c:url var="builddingAPI" value="/api-admin-building"/>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -68,12 +68,22 @@
 											<div class="form-group">
 												<div class="col-sm-4">
 													<label><b>Nhân viên phụ trách</b></label>
-													<select class="form-control" name="userId">
+													<%-- <select class="form-control" name="userId">
 														<option value=""   selected>--Chọn nhân viên--</option>
 														<c:forEach var="item" items="${model.staffList}">
 															<option value="${item.id}" ${(item.id==model.userId)?'selected':''}>${item.fullName}</option>
 														</c:forEach>
-													</select>
+													</select> --%>
+									        		
+													<br>
+									        		<c:forEach var="item" items="${model.staffList}">
+															<label> <input type="checkbox"
+																value="${item.id}" name="userIds"
+																${fn:contains(fn:join(model.userIds,','),item.id) ? 'checked':'' }>&nbsp;<b>${item.fullName}</b>
+																 &nbsp; &nbsp;
+															</label>
+													</c:forEach>			
+									        		
 												</div>
 											</div>
 											<input type="hidden" name="action" value="LIST">
@@ -100,7 +110,7 @@
 									<a  class="dt-button buttons-colvis btn btn-white btn-primary btn-bold"
 										data-toggle="tooltip"
 										title='Thêm khách hàng'		
-										href='<c:url value="#themkhachhang"/>'> <span><i class="fa fa-plus-circle sbigger-110 purple"></i></span>
+										href='<c:url value="/admin-customer?action=EDIT"/>'> <span><i class="fa fa-plus-circle sbigger-110 purple"></i></span>
 									</a>
 									<button type="button" id="bntDelete"
 											class="dt-button buttons-html5 btn btn-white btn-primary btn-bold"
@@ -140,7 +150,7 @@
 								        <td>${item.phoneNumber}</td>
 								        <td>${item.email}</td>
 								        <td>${item.need}</td>
-								        <td>${item.dataEntry}</td>
+								        <td>${item.createdBy}</td>
 								        <td>${item.status}</td>
 								       	<td>${item.staffInCharge}</td>
 								       						      
@@ -203,14 +213,12 @@
 		var dataArray = $(' tbody input[type=checkbox]:checked').map(function () {
 			return $(this).val();			
 		}).get();
-		//var data = {};
-		//data['ids'] = dataArray;	
-		deleteBuilding(dataArray);	
+		deleteCustomer(dataArray);	
 	})
 	
-	function deleteBuilding(data) {
+	function deleteCustomer(data) {
 		$.ajax({
-			url : 'http://localhost:8087/api/building',
+			url : 'http://localhost:8087/api/customer',
 			data: JSON.stringify(data),
 			type: 'DELETE',	
 			contentType: 'application/json',

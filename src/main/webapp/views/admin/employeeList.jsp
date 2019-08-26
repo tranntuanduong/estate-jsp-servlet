@@ -64,7 +64,8 @@
 											<input type="checkbox" value="${item.id}"  ${item.buildingChecked}>
 										</c:if>		
 										<c:if test="${action == 'staffInCharge'}">
-											<input type="radio" value="${item.id}" name="customerId" ${item.customerChecked}>							
+											<!--  <input type="radio" value="${item.id}" name="customerId" ${item.customerChecked}>	-->	
+											<input type="checkbox" value="${item.id}"  ${item.customerChecked}>					
 										</c:if>																																								
 									</td>
 							      	<td>${item.fullName}</td>		 
@@ -107,12 +108,10 @@ function handOverBuilding(data, id) {
 }
 
 $('#chooseStaffInCharge').click(function name() {
-	var dataArray = $(' tbody input[type=radio]:checked').map(function () {
+	var dataArray = $(' tbody input[type=checkbox]:checked').map(function () {
 		return $(this).val();			
 	}).get();
 	var data = {};
-	//vi chua xac dinh dc quan he la gi
-	//tam coi la 1 khach hang chi do 1 nhan vien quan li
 	data['ids'] = dataArray;	
 	var customerId = $('#customerId').val();
 	data['id'] = customerId;

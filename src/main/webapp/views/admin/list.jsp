@@ -162,14 +162,14 @@
 											<div class="form-group">
 												<div class="col-sm-4">
 													<label><b>Loại tòa nhà</b></label>
-													<div class="checkbox">
+													
 														<c:forEach var="item" items="${buildingtypes}">
 															<label> <input type="checkbox"
 																value="${item.key}" name="buildingTypes"
 																${fn:contains(fn:join(model.buildingTypes,','),item.key) ? 'checked':'' }><b>${item.value}</b>
 															</label>
 														</c:forEach>
-													</div>
+													
 												</div>
 											</div>
 											<input type="hidden" name="action" value="LIST">
@@ -302,8 +302,6 @@
 		var dataArray = $(' tbody input[type=checkbox]:checked').map(function () {
 			return $(this).val();			
 		}).get();
-		//var data = {};
-		//data['ids'] = dataArray;	
 		deleteBuilding(dataArray);	
 	})
 	

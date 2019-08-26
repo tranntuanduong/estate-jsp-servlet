@@ -53,22 +53,26 @@ public class CustomerController extends HttpServlet {
 			model.setListResult(customerService.findAll(findAllAPI.toString().replaceAll("\\s+", "%20")));
 		
 		} else if (model.getAction().equals("EDIT")) {
-			url = "/views/admin/customer/edit.jsp";
+			StringBuilder loadStaffList = new StringBuilder("http://localhost:8087/api/user/assignment?role=STAFF");
 			String customerIdStr = request.getParameter("customerId");
-			String findByIdAPI = "http://localhost:8087/api/customer/findById?id="+customerIdStr;
-			
-			CustomerDTO customer = customerService.findById(findByIdAPI);
-			request.setAttribute("customer", customer);
-			String loadStaffList = "http://localhost:8087/api/user/assignment?role=STAFF&customerId="+customerIdStr;
-			List<UserDTO> staffList = userService.findAll(loadStaffList);
+			if(customerIdStr != null) {
+				//find customer
+				String findByIdAPI = "http://localhost:8087/api/customer/findById?id="+customerIdStr;			
+				CustomerDTO customer = customerService.findById(findByIdAPI);
+				request.setAttribute("customer", customer);
+				request.setAttribute("customerId", customerIdStr);		
+				loadStaffList.append("&customerId="+customerIdStr);
+			}
+			//find stafss	
+			List<UserDTO> staffList = userService.findAll(loadStaffList.toString());
 			model.setStaffList(staffList);
-
-		
+			url = "/views/admin/customer/edit.jsp";
 		}
 		//tam thoi de the nay da !!!!!
 		model.setTotalItems(5);
 		model.setTotalPage(2);
 		request.setAttribute("model", model);
+		
 		RequestDispatcher rd = request.getRequestDispatcher(url);
 		rd.forward(request, response);
 	}
@@ -80,8 +84,20 @@ public class CustomerController extends HttpServlet {
 		for (Field field : fields) {
 			field.setAccessible(true);
 			try {
-				if(StringUtils.isNotBlank((String) field.get(builder))) {
-					findAllAPI.append("&"+field.getName()+"="+field.get(builder)+"");
+				if(field.get(builder) != null) {
+					if(field.getName().equals("userIds")) {
+						if(((String[])field.get(builder)).length > 0) {
+							String[] userIds = (String[]) field.get(builder);
+							findAllAPI.append("&userIds="+userIds[0]+"");
+							for(String userId : userIds) {
+								if(!userId.equals(userIds[0])) {
+									findAllAPI.append(","+userId);
+								}
+							}
+						}
+					} else {
+						findAllAPI.append("&"+field.getName()+"="+field.get(builder)+"");
+					}	
 				}
 			} catch (IllegalArgumentException | IllegalAccessException e) {
 				e.printStackTrace();
@@ -96,8 +112,8 @@ public class CustomerController extends HttpServlet {
 	private CustomerSearchBuilder initCustomerSearchBuilder(CustomerDTO model) {
 		CustomerSearchBuilder builder = new CustomerSearchBuilder.Builder()
 					.setName(model.getName()).setEmail(model.getEmail())
-					.setPhoneNumber(model.getPhoneNumber()).setUserId(model.getUserId())
-					
+					.setPhoneNumber(model.getPhoneNumber())
+					.setUserIds(model.getUserIds())
 					.build();
 		return builder;
 	}
