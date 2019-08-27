@@ -13,7 +13,7 @@ public class BuildingSearchBuilder {
 	 private String areaRentTo;
 	 private String[] buildingTypes = new String[] {};
 	 private String district;
-	 
+	 private String user_id;
 	public String getBuildingArea() {
 		return buildingArea;
 	}
@@ -50,6 +50,14 @@ public class BuildingSearchBuilder {
 	public String getRentArea() {
 		return rentArea;
 	}
+	
+	 public String[] getBuildingTypes() {
+		return buildingTypes;
+	}
+
+	public String getUser_id() {
+		return user_id;
+	}
 	public BuildingSearchBuilder(Builder builder) {
 		 this.name = builder.name;
 		 this.ward = builder.ward;
@@ -63,11 +71,10 @@ public class BuildingSearchBuilder {
 		 this.buildingTypes = builder.buildingTypes;
 		 this.district = builder.district;
 		 this.buildingArea = builder.buildingArea;
+		 this.user_id = builder.user_id;
 	 }
 	 
-	 public String[] getBuildingTypes() {
-		return buildingTypes;
-	}
+
 
 	public static class Builder {
 		 private String name;
@@ -82,10 +89,17 @@ public class BuildingSearchBuilder {
 		 private String areaRentTo;
 		 private String[] buildingTypes = new String[] {};
 		 private String district;
+		 private String user_id;
 		public Builder setName(String name) {
 			this.name = name;
 			return this;
 		}
+		
+		public Builder setUser_id(String user_id) {
+			this.user_id = user_id;
+			return this;
+		}
+
 		public Builder setWard(String ward) {
 			this.ward = ward;
 			return this;

@@ -2,7 +2,6 @@ package com.laptrinhjavaweb.controller.admin;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.RequestDispatcher;
@@ -13,20 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
-import org.apache.log4j.pattern.LogEvent;
 
 import com.laptrinhjavaweb.builder.BuildingSearchBuilder;
 import com.laptrinhjavaweb.dto.BuildingDTO;
 import com.laptrinhjavaweb.dto.UserDTO;
-import com.laptrinhjavaweb.paging.PageRequest;
-import com.laptrinhjavaweb.paging.Pageble;
-import com.laptrinhjavaweb.paging.Sorter;
 import com.laptrinhjavaweb.service.IBuildingService;
 import com.laptrinhjavaweb.service.IUserService;
 import com.laptrinhjavaweb.utils.DataUtils;
@@ -50,6 +40,7 @@ public class BuildingController extends HttpServlet {
 		BuildingDTO model = FormUtil.toModel(BuildingDTO.class, request);
 		UserDTO users = new UserDTO();
 		String url ="";
+		StringBuilder loadStaffList = new StringBuilder("http://localhost:8087/api/user/assignment?role=STAFF");
 		if(model.getAction().equals("LIST")) {
 			url = "/views/admin/list.jsp";
 			
@@ -63,18 +54,20 @@ public class BuildingController extends HttpServlet {
 			model.setTotalItems(buildingService.getTotalItems(getTotalItemAPI.toString().replaceAll("\\s+", "%20")));
 			model.setTotalPage((int)Math.ceil((double)model.getTotalItems() / model.getMaxPageItem()));
 			model.setListResult(buildingService.findAll(findAllAPI.toString().replaceAll("\\s+", "%20")));	
-			
-		} else if (model.getAction().equals("EDIT")) { 
+							
+		} else if (model.getAction().equals("EDIT")) { 	
 			if(model.getId() != null) {
 				String findById = "http://localhost:8087/api/building/findAll?id="+model.getId();
 				model = buildingService.findById(findById);				
-			}
+				loadStaffList.append("&buildingId="+model.getId());
+			}	
 			url = "/views/admin/edit.jsp";			
 		} 
+		users.setListResult(userService.findAll(loadStaffList.toString()));
 		request.setAttribute("districts", DataUtils.getDistricts());
 		request.setAttribute("buildingtypes", DataUtils.getBuildingType());
 		request.setAttribute("model", model);		
-//		request.setAttribute("users", users);
+		request.setAttribute("users", users);
 		RequestDispatcher rd = request.getRequestDispatcher(url);
 		rd.forward(request, response);
 	}
@@ -120,7 +113,7 @@ public class BuildingController extends HttpServlet {
 				.setAreaRentForm(model.getAreaRentForm()).setAreaRentTo(model.getAreaRentTo())
 				.setNumberOfBasement(model.getNumberOfBasement()).setRentArea(model.getRentArea())
 				.setStreet(model.getStreet()).setBuildingTypes(model.getBuildingTypes())
-				.setBuildingArea(model.getBuildingArea())
+				.setBuildingArea(model.getBuildingArea()).setUser_id(model.getUser_id())
 				.build();
 		return builder;
 	}

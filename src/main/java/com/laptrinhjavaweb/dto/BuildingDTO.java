@@ -33,7 +33,22 @@ public class BuildingDTO extends AbstractDTO<BuildingDTO>{
 	private String areaRentForm;
 	private String areaRentTo;
 	private String[] buildingTypes = new String[]{};
+	private String staffInCharge;
+	private String user_id;
 	
+	
+	public String getUser_id() {
+		return user_id;
+	}
+	public void setUser_id(String user_id) {
+		this.user_id = user_id;
+	}
+	public String getStaffInCharge() {
+		return staffInCharge;
+	}
+	public void setStaffInCharge(String staffInCharge) {
+		this.staffInCharge = staffInCharge;
+	}
 	public String getNumberOfBasement() {
 		return numberOfBasement;
 	}
@@ -205,7 +220,7 @@ public class BuildingDTO extends AbstractDTO<BuildingDTO>{
 		this.buildingArea = buildingAre;
 	}
 	public String getAddress() {
-		return  this.street + ", " +this.ward;
+		return  this.street + ", " +this.ward+", "+this.district;
 	}
 	public String getRentArea() {
 		return rentArea;

@@ -68,21 +68,21 @@
 											<div class="form-group">
 												<div class="col-sm-4">
 													<label><b>Nhân viên phụ trách</b></label>
-													<%-- <select class="form-control" name="userId">
+													<select class="form-control" name="userId">
 														<option value=""   selected>--Chọn nhân viên--</option>
 														<c:forEach var="item" items="${model.staffList}">
 															<option value="${item.id}" ${(item.id==model.userId)?'selected':''}>${item.fullName}</option>
 														</c:forEach>
-													</select> --%>
+													</select>
 									        		
 													<br>
-									        		<c:forEach var="item" items="${model.staffList}">
+									        		<%-- <c:forEach var="item" items="${model.staffList}">
 															<label> <input type="checkbox"
 																value="${item.id}" name="userIds"
 																${fn:contains(fn:join(model.userIds,','),item.id) ? 'checked':'' }>&nbsp;<b>${item.fullName}</b>
 																 &nbsp; &nbsp;
 															</label>
-													</c:forEach>			
+													</c:forEach>	 --%>		
 									        		
 												</div>
 											</div>

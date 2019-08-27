@@ -53,13 +53,16 @@
 								</div>
 								<div class="col-sm-3">
 									<div class="fg-line">
-										<select class="form-control" id="sel1">
-											<option value="" disabled selected>-Chọn người quản lí-</option>
-											<option value="#">Nhân viên A</option>
-											<option value="#">Nhân viên B</option>
-											<option value="#">Nhân viên C</option>
-											<option value="#">Nhân viên D</option>
-										</select>
+										<c:forEach var="item" items="${users.listResult}" >		        			
+											   	<tbody>			    
+											      <tr> 
+											      	<td>		
+														<input type="checkbox" value="${item.id}"  ${item.buildingChecked} name="staffId">																																						
+													</td>
+											      	<td>${item.fullName}</td>		 
+											      </tr>
+											    </tbody>		   
+						        		</c:forEach>
 									</div>
 								</div>
 							</div>
@@ -345,6 +348,10 @@
 			}			
 		});
 		data['buildingTypes'] = buildingTypes;
+		var dataArray = $('input[name="staffId"]:checked').map(function () {
+			return $(this).val();			
+		}).get();
+		data['ids'] = dataArray;
 		if (buildingId =='') {
 			addBuilding(data);
 		} else {

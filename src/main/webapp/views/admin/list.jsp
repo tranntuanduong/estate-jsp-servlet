@@ -53,6 +53,7 @@
 													</div>
 												</div>
 											</div>
+											
 											<div class="form-group">
 												<div class="col-sm-2">
 													<label><b>Quận hiện có</b></label> <select
@@ -148,20 +149,22 @@
 															name="managerPhone" value="${model.managerPhone}" />
 													</div>
 												</div>
-												<!-- <div class="col-sm-3">
-												<label><b>Chọn nhân viên phụ trách</b></label> 
-												<select class="form-control" id="sel1">
-													<option value="" disabled selected>--Chọn nhân viên--</option>
-													<option>Nhân viên A</option>
-													<option>Nhân viên B</option>
-													<option>Nhân viên C</option>
-													<option>Nhân viên D</option>
-												</select>
-											</div> -->
+												<div class="col-sm-4">
+													<div class="col-sm-5">
+														<label><b>Nhân viên quản lí: </b></label>
+														<select class="form-control" id="sel1" name="user_id">
+															<option value=""  selected>--Chọn nhân viên--</option>
+															<c:forEach var="item" items="${users.listResult}">
+																<option value="${item.id}" ${(item.id==model.user_id)?'selected':''} >${item.fullName}</option>
+																
+															</c:forEach>
+														</select>							
+													</div>
+												</div>
 											</div>
 											<div class="form-group">
 												<div class="col-sm-4">
-													<label><b>Loại tòa nhà</b></label>
+													<label><b>Loại tòa nhà: </b></label>
 													
 														<c:forEach var="item" items="${buildingtypes}">
 															<label> <input type="checkbox"
@@ -171,7 +174,9 @@
 														</c:forEach>
 													
 												</div>
+												
 											</div>
+										
 											<input type="hidden" name="action" value="LIST">
 											<div class="form-group">
 												<div class="col-sm-1">
@@ -227,6 +232,7 @@
 						        <th>Loại tòa nhà</th>
 						        <th>Tên quản lý</th>
 						        <th>SĐT quản lí</th>
+						        <th>Nhân viên</th>
 						     	<th>Thao tác</th>			       
 						      </tr>
 						    </thead>
@@ -243,9 +249,9 @@
 								        <td>${item.costRent}</td>
 								        <td>${item.type}</td>
 								        <td>${item.managerName}</td>
-								        <td>${item.managerPhone}</td>									      
-								      	<td>
-																	        					
+								        <td>${item.managerPhone}</td>	
+								        <td>${item.staffInCharge}</td>								      
+								      	<td>					        					
 										<table>
 											 <tr>
 											     <td>
@@ -270,7 +276,7 @@
 											      <td>D</td>
 											  </tr>
 										</table>
-								        	
+								        </td>
 								        					        
 							      	</tr>
 						     	</c:forEach>

@@ -113,7 +113,7 @@ public class CustomerController extends HttpServlet {
 		CustomerSearchBuilder builder = new CustomerSearchBuilder.Builder()
 					.setName(model.getName()).setEmail(model.getEmail())
 					.setPhoneNumber(model.getPhoneNumber())
-					.setUserIds(model.getUserIds())
+					.setUserIds(model.getUserIds()).setUserId(model.getUserId())
 					.build();
 		return builder;
 	}
