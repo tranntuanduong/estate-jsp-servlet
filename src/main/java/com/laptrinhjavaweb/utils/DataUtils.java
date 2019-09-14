@@ -6,6 +6,7 @@ import java.util.TreeMap;
 
 import com.laptrinhjavaweb.enums.BuildingTypeEnum;
 import com.laptrinhjavaweb.enums.DistrictEnum;
+import com.laptrinhjavaweb.enums.TransactionEnum;
 
 public class DataUtils {
 	public static Map<String, String> getBuildingType() {
@@ -20,6 +21,14 @@ public class DataUtils {
 //		Map<String, String> result = new HashMap<String, String>();
 		Map<String, String> result = new TreeMap<String, String>();
 		for(DistrictEnum item : DistrictEnum.values()) {
+			result.put(item.name(), item.getValue());
+		}
+		return result;
+	}
+	
+	public static Map<String, String> getTransactions() {
+		Map<String, String> result = new TreeMap<String, String>();
+		for(TransactionEnum item : TransactionEnum.values()) {
 			result.put(item.name(), item.getValue());
 		}
 		return result;

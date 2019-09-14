@@ -12,12 +12,12 @@ public class CustomerDTO extends AbstractDTO<CustomerDTO>  {
 	//nhan vien quan li customer
 	private String staffInCharge;
 	private String userId;
-	private String node;
+	
 	private String company;	
 	private List<TransactionDTO> transactions;
-	private String customerCare;
-	private String guide;
-	private String role;
+	
+	private String code;
+	private String node;
 	private String[] userIds;
 	
 	private List<UserDTO> staffList;
@@ -34,23 +34,12 @@ public class CustomerDTO extends AbstractDTO<CustomerDTO>  {
 	public void setStaffList(List<UserDTO> staffList) {
 		this.staffList = staffList;
 	}
-	public String getCustomerCare() {
-		return customerCare;
+	
+	public String getCode() {
+		return code;
 	}
-	public void setCustomerCare(String customerCare) {
-		this.customerCare = customerCare;
-	}
-	public String getGuide() {
-		return guide;
-	}
-	public void setGuide(String guide) {
-		this.guide = guide;
-	}
-	public String getRole() {
-		return role;
-	}
-	public void setRole(String role) {
-		this.role = role;
+	public void setCode(String code) {
+		this.code = code;
 	}
 	public List<TransactionDTO> getTransactions() {
 		return transactions;

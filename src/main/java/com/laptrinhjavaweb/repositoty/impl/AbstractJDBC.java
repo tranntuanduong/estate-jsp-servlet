@@ -11,7 +11,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
-import java.util.ResourceBundle;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -48,7 +47,9 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 	@Override
 	public List<T> select(String sql, Object... parameters) {	
 		ResultSetMapper<T> resultSetMapper = new ResultSetMapper<>();	
+		
 		try(Connection conn = getConnection();
+				
 				PreparedStatement ptmt = conn.prepareStatement(sql);
 				ResultSet resultSet = ptmt.executeQuery()
 				){

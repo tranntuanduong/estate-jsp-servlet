@@ -19,6 +19,7 @@ import com.laptrinhjavaweb.dto.CustomerDTO;
 import com.laptrinhjavaweb.dto.UserDTO;
 import com.laptrinhjavaweb.service.ICustomerService;
 import com.laptrinhjavaweb.service.IUserService;
+import com.laptrinhjavaweb.utils.DataUtils;
 import com.laptrinhjavaweb.utils.FormUtil;
 
 
@@ -40,10 +41,11 @@ public class CustomerController extends HttpServlet {
 			CustomerSearchBuilder builder = initCustomerSearchBuilder(model);
 			String findAllStr =  "http://localhost:8087/api/customer";
 			StringBuilder findAllAPI = initCustomerParams(findAllStr, builder, model);
-			//String getTotalItemStr = "http://localhost:8087/api/customer/total";
-			//StringBuilder getTotalItemAPI = initCustomerParams(findAllStr, builder, model);
-			//model.setTotalItems(customerService.getTotalItems(getTotalItemAPI.toString().replaceAll("\\s+", "%20")));
-			//model.setTotalPage((int)Math.ceil((double)model.getTotalItems() / model.getMaxPageItem()));
+	
+			String getTotalItemStr = "http://localhost:8087/api/customer/total";
+			StringBuilder getTotalItemAPI = initCustomerParams(getTotalItemStr, builder, model);
+			model.setTotalItems(customerService.getTotalItems(getTotalItemAPI.toString()));
+			model.setTotalPage((int)Math.ceil((double)model.getTotalItems() / model.getMaxPageItem()));
 			
 			//load staff list
 			String loadStaffList = "http://localhost:8087/api/user/assignment?role=STAFF";
@@ -56,6 +58,7 @@ public class CustomerController extends HttpServlet {
 			StringBuilder loadStaffList = new StringBuilder("http://localhost:8087/api/user/assignment?role=STAFF");
 			String customerIdStr = request.getParameter("customerId");
 			if(customerIdStr != null) {
+				//if update
 				//find customer
 				String findByIdAPI = "http://localhost:8087/api/customer/findById?id="+customerIdStr;			
 				CustomerDTO customer = customerService.findById(findByIdAPI);
@@ -66,13 +69,10 @@ public class CustomerController extends HttpServlet {
 			//find stafss	
 			List<UserDTO> staffList = userService.findAll(loadStaffList.toString());
 			model.setStaffList(staffList);
-			url = "/views/admin/customer/edit.jsp";
+			url = "/views/admin/customer/edit.jsp";	
 		}
-		//tam thoi de the nay da !!!!!
-		model.setTotalItems(5);
-		model.setTotalPage(2);
-		request.setAttribute("model", model);
-		
+		request.setAttribute("model", model);	
+		request.setAttribute("transactions", DataUtils.getTransactions());
 		RequestDispatcher rd = request.getRequestDispatcher(url);
 		rd.forward(request, response);
 	}

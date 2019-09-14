@@ -15,7 +15,6 @@ public class UserDTO extends AbstractDTO<UserDTO> {
 	private String customerChecked;
 	private Long userId;
 	
-
 	public Long getUserId() {
 		return userId;
 	}

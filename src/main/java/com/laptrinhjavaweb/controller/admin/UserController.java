@@ -64,7 +64,6 @@ public class UserController extends HttpServlet {
 		rd.forward(request, response);
 	}
 
-
 	private StringBuilder initUserParams(String findAllStr, UserSearchBuilder builder, UserDTO model) {
 		StringBuilder findAllAPI = new StringBuilder(findAllStr);	
 		//check page and maxpageitem
@@ -91,8 +90,7 @@ public class UserController extends HttpServlet {
 	private UserSearchBuilder initUserBuilder(UserDTO model) {
 		UserSearchBuilder builder = new UserSearchBuilder.Builder()
 					.setFullName(model.getFullName()).setRole(model.getRole())
-					.setBuildingId(model.getBuildingId()).setCustomerId(model.getCustomerId())
-					
+					.setBuildingId(model.getBuildingId()).setCustomerId(model.getCustomerId())			
 					.build();
 		return builder;
 	}
